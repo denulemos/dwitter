@@ -15,18 +15,11 @@ router.get("/", (req, res, next) => {
 router.post("/", (req, res, next) => {
     const usuario = req.body.usuario.trim();
     const email = req.body.email.trim();
-    const contrasenia = req.body.contrasenia;
+    const password = req.body.password;
 
     const payload = req.body;
 
-    // Estan todos los campos llenos?
-    if (usuario && email && contrasenia) {
-
-    }
-    else{
-        payload.errorMessage = "Completá todos los campos";
-        res.status(200).render("signup", payload);
-    }
+    
 })
 
 module.exports = router;

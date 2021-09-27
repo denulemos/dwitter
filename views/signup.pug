@@ -10,19 +10,19 @@ block content
 
             input(type="text", name="usuario", placeholder="Usuario", required=""  value=usuario) 
             input(type="email", name="email", placeholder="Email", required=""  value=email) 
-            input#contrasenia(type="password", name="contrasenia", placeholder="Contraseña", required=""  value=constrasenia)
-            input#confirmarContrasenia(type="password", name="confirmarContrasenia", placeholder="Confirmar contraseña", required="")
+            input#password(type="password", name="password", placeholder="Contraseña", required=""  value=constrasenia)
+            input#confirmarPassword(type="password", name="confirmarPassword", placeholder="Confirmar contraseña", required="")
             input(type="submit", value="Registrarme")
 
         a(href="/login") ¿Ya tenés una cuenta? Ingresá!
 
     script. 
-        const campoContrasenia = document.getElementById("contrasenia");
-        const confirmarContrasenia = document.getElementById("confirmarContrasenia");
+        const password = document.getElementById("password");
+        const confirmarPassword = document.getElementById("confirmarPassword"); 
         const form = document.getElementById("formulario");
 
         const validarFormulario = () => {
-            campoContrasenia.value !== confirmarContrasenia.value ? alert("Las contraseñas no coinciden") : form.submit();
+            password.value !== confirmarPassword.value ? alert("Las contraseñas no coinciden") : form.submit();
         }
 
 

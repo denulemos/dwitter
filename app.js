@@ -3,10 +3,19 @@ const app = express();
 const port = 8080;
 const middleware = require('./middleware');
 const mongoose = require('./database');
+const session = require('express-session');
 
 // Servir archivos estaticos
 const path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Uso de sesiones
+app.use(session({
+    // Hashear una sesion
+    secret: 'megustanlasmilanesas',
+    resave: true,
+    saveUninitialized: false
+}))
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
@@ -27,7 +36,8 @@ const server = app.listen(port, () => {
 // Root
 app.get("/", middleware.requireLogin, (req, res, next) => {
     var payload = {
-       pageTitle: "Dwitter | Home"
+       pageTitle: "Dwitter | Home",
+       userLoggedIn: req.session.user
     }
 
     res.status(200).render("home", payload);

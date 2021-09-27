@@ -2,6 +2,11 @@ const express = require('express');
 const app = express();
 const port = 8080;
 const middleware = require('./middleware');
+const mongoose = require('mongoose');
+
+mongoose.connect("mongodb+srv://admin:dwitteradmin@dwittercluster.hoqbb.mongodb.net/DwitterDB?retryWrites=true&w=majority")
+.then(() => console.log("Conectado a MongoDB"))
+.catch(() => console.log("Error en MongoDB"))
 
 // Servir archivos estaticos
 const path = require('path');

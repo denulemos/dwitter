@@ -5,23 +5,24 @@ block content
         h1 Registro 
 
         form#formulario(method="post", onsubmit="event.preventDefault(); validarFormulario();") 
-            input(type="text", name="nombre", placeholder="Nombre", required="") 
-            input(type="text", name="apellido", placeholder="Apellido", required="") 
-            input(type="text", name="usuario", placeholder="Usuario", required="") 
-            input(type="email", name="email", placeholder="Email", required="") 
-            input#contrasenia(type="password", name="contraseña", placeholder="Contraseña", required="")
-            input#confirmarContrasenia(type="password", name="confirmarContraseña", placeholder="Confirmar contraseña", required="")
+
+            p.errorMessage #{errorMessage}
+
+            input(type="text", name="usuario", placeholder="Usuario", required=""  value=usuario) 
+            input(type="email", name="email", placeholder="Email", required=""  value=email) 
+            input#contrasenia(type="password", name="contrasenia", placeholder="Contraseña", required=""  value=constrasenia)
+            input#confirmarContrasenia(type="password", name="confirmarContrasenia", placeholder="Confirmar contraseña", required="")
             input(type="submit", value="Registrarme")
 
         a(href="/login") ¿Ya tenés una cuenta? Ingresá!
 
     script. 
-        const campoContraseña = document.getElementById("contrasenia");
-        const confirmacionContraseña = document.getElementById("confirmarContrasenia");
+        const campoContrasenia = document.getElementById("contrasenia");
+        const confirmarContrasenia = document.getElementById("confirmarContrasenia");
         const form = document.getElementById("formulario");
 
         const validarFormulario = () => {
-            campoContraseña.value !== confirmacionContraseña.value ? alert ("Las contraseñas no coinciden") : form.submit();
+            campoContrasenia.value !== confirmarContrasenia.value ? alert("Las contraseñas no coinciden") : form.submit();
         }
 
 

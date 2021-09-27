@@ -13,8 +13,20 @@ router.get("/", (req, res, next) => {
     res.status(200).render("signup");
 })
 router.post("/", (req, res, next) => {
-    console.log(req.body);
-    res.status(200).render("signup");
+    const usuario = req.body.usuario.trim();
+    const email = req.body.email.trim();
+    const contrasenia = req.body.contrasenia;
+
+    const payload = req.body;
+
+    // Estan todos los campos llenos?
+    if (usuario && email && contrasenia) {
+
+    }
+    else{
+        payload.errorMessage = "Completá todos los campos";
+        res.status(200).render("signup", payload);
+    }
 })
 
 module.exports = router;

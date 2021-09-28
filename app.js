@@ -25,6 +25,8 @@ const loginRoute = require("./routes/loginRoutes");
 app.use("/login", loginRoute);
 const signupRoute = require("./routes/signupRoutes");
 app.use("/signup", signupRoute);
+const logoutRoute = require("./routes/logoutRoutes");
+app.use("/logout", logoutRoute);
 
 app.set("view engine", "pug");
 app.set("views", "views");

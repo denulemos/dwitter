@@ -1,7 +1,59 @@
+:root {
+  --greenish-blue: #16A085;
+  --grey: #95A5A6;
+  --hover-grey: #7F8C8D;
+  --spacing: 15px;
+}
+
+a {
+    color: inherit;
+}
+
 nav {
-    background-color: pink;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    height: 100%;
+}
+
+nav a {
+    padding: 10px;
+    font-size: 30px;
+    width: 55px;
+    height: 55px;
+    display: flex;
+    color: var(--grey);
+    justify-content: center;
+    align-items: center;
+
+}
+
+nav a:hover {
+    color: var(--hover-grey);
+    text-decoration: none;
+}
+
+nav a.greenish {
+    color: var(--greenish-blue);
 }
 
 .mainSectionContainer {
-    background-color: blue;
+    padding: 0;
+    border-left: 1px solid var(--grey);
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--grey);
+}
+
+.titleContainer {
+    height: 53px;
+    padding: 0 var(--spacing);
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--grey);
+    flex-shrink: 0; /* Fix para Safari */
+}
+
+.titleContainer h1 {
+    flex: 1;
 }

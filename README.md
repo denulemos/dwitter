@@ -8,12 +8,12 @@ Pararse en la raiz del proyecto `./Dwitter` y en terminal, correr `npm install` 
 * Este proyecto fue hecho con la version 10 de NodeJS. 
 
 ## Funcionalidades (TODOs) 📖
-* El usuario podrá logearse, registrarse en la plataforma y Twittear. **DONE**
+* El usuario podrá logearse, registrarse en la plataforma y Twittear. ✔️
 * Implementar nvm para mantener la version de Node actualmente utilizada.
 * Los twits podrán ser retwitteados, likeados, respondidos y borrados (por el mismo autor). 
 * Tambien existirá la opcion de enviar mensajes privados, hacer salas de chat con varios usuarios, y hablar desde ahi (Hecho con la magia de `Socket.io`). Los chats traeran los mensajes viejos que el usuario no llegó a leer en el momento
 * El usuario podrá setear su perfil en el momento que lo desee, para, por ejemplo, cambiar la foto de perfil
 * Habrán notificaciones en Real-Time
-* Se mantendrá una sesion de usuario **DONE**
+* Se mantendrá una sesion de usuario ✔️
 * El usuario podrá seguir a otros usuarios para ver sus Twits en el inicio. 
-* En este proyecto los Twits pasarán a ser llamados Dwits. **DONE**
+* En este proyecto los Twits pasarán a ser llamados Dwits. ✔️

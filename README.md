@@ -14,6 +14,6 @@ Pararse en la raiz del proyecto `./Dwitter` y en terminal, correr `npm install` 
 * Tambien existirá la opcion de enviar mensajes privados, hacer salas de chat con varios usuarios, y hablar desde ahi (Hecho con la magia de `Socket.io`). Los chats traeran los mensajes viejos que el usuario no llegó a leer en el momento
 * El usuario podrá setear su perfil en el momento que lo desee, para, por ejemplo, cambiar la foto de perfil
 * Habrán notificaciones en Real-Time
+* Se mantendrá una sesion de usuario **DONE**
 * El usuario podrá seguir a otros usuarios para ver sus Twits en el inicio. 
 * En este proyecto los Twits pasarán a ser llamados Dwits. **DONE**
-

@@ -4,7 +4,9 @@ block content
     .loginContainer 
         h1 Login 
         form(method="post") 
-            input(type="text", name="logUsuario", placeholder="Usuario o email", required="") 
-            input(type="password", name="logContraseña", placeholder="Contraseña", required="")
+            p.errorMessage #{errorMessage}
+
+            input(type="text", name="usuario", placeholder="Usuario o email", value=usuario required="") 
+            input(type="password", name="password", placeholder="Contraseña", required="")
             input(type="submit", value="Ingresar")
         a(href="/signup") ¿Necesitás una cuenta? ¡Registrate!

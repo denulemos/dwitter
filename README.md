@@ -15,4 +15,4 @@ Pararse en la raiz del proyecto `./Dwitter` y en terminal, correr `npm install` 
 * En este proyecto los Twits pasarán a ser llamados Dwits.
 
 ## Tecnology Description
-* Se va a usar NodeJS con Express, en conjunto con MongoDB como Base de Datos y Pug como motor de plantillas en frontend.
+* Se va a usar NodeJS con Express, en conjunto con MongoDB como Base de Datos y Pug como motor de plantillas en frontend. Tambien se usará Bootstrap. 

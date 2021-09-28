@@ -30,7 +30,7 @@ app.set("view engine", "pug");
 app.set("views", "views");
 
 const server = app.listen(port, () => {
-    console.log('Dwitter backend it´s alive in port ' + port + "!")
+    console.log('I AM ALIVEEEEEE in port ' + port + " thanks mother")
 });
 
 // Root

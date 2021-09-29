@@ -91,7 +91,7 @@ Los mismos pueden variar a medida que se va desarrollando el proyecto
 }, { timestamps: true });
 ```
 
-![UML](./assets/UML.png)
+![UML](assets/UML.png)
 
 # Funcionalidades (TODOs) 📖
 * El usuario podrá logearse, registrarse en la plataforma y Twittear. ✔️

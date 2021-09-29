@@ -15,7 +15,7 @@ Pararse en la raiz del proyecto `./Dwitter` y en terminal, correr `npm install` 
 * El frontend se complementará con Bootstrap ✔️
 * Todavia no se definio a que plataforma será subido este proyecto.
 
-## Endpoints
+## Endpoints (Todavia en definicion ⚠️)
 * `api/post` => Enviar dwit 
 ## Schemas
 Los mismos pueden variar a medida que se va desarrollando el proyecto

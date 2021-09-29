@@ -14,7 +14,7 @@ $("#enviarPostButton").click(() => {
     const boton = $(event.target);
     const textBox = $("#postTextArea");
 
-    axios.post('/api/post', {
+    axios.post('/api/posts', {
         contenido: textBox.val()
     })
     .then((response) => {

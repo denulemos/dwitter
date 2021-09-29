@@ -16,7 +16,7 @@ Pararse en la raiz del proyecto `./Dwitter` y en terminal, correr `npm install` 
 * Todavia no se definio a que plataforma será subido este proyecto.
 
 ## Endpoints (Todavia en definicion ⚠️)
-* `api/post` => Enviar dwit 
+* `api/posts` => Enviar dwit 
 ## Schemas
 Los mismos pueden variar a medida que se va desarrollando el proyecto
 ### User

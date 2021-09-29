@@ -28,6 +28,11 @@ app.use("/signup", signupRoute);
 const logoutRoute = require("./routes/logoutRoutes");
 app.use("/logout", logoutRoute);
 
+// Rutas API
+const postsApiRoute = require("./routes/api/posts");
+app.use("/api/posts", postsApiRoute);
+
+// Seteo motor visual
 app.set("view engine", "pug");
 app.set("views", "views");
 

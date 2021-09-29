@@ -38,7 +38,7 @@ const server = app.listen(port, () => {
 // Root
 app.get("/", middleware.requireLogin, (req, res, next) => {
     var payload = {
-       pageTitle: "Dwitter | Home",
+       pageTitle: "Dwitter",
        userLoggedIn: req.session.user
     }
 

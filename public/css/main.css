@@ -1,5 +1,6 @@
 :root {
   --greenish-blue: #16A085;
+  --greenish-blue-light: #5aaa9a;
   --grey: #95A5A6;
   --hover-grey: #7F8C8D;
   --spacing: 15px;
@@ -25,6 +26,7 @@ nav a {
     color: var(--grey);
     justify-content: center;
     align-items: center;
+    
 
 }
 
@@ -56,4 +58,51 @@ nav a.greenish {
 
 .titleContainer h1 {
     flex: 1;
+    font-weight: 600;
+    font-size: 20px;
 }
+
+.postFormContainer {
+    display: flex;
+    padding: var(--spacing);
+    flex-shrink: 0;
+    border-bottom: 6px solid var(--greenish-blue);
+}
+
+.imagenUsuarioContainer {
+width: 50px;
+height: 50px;
+}
+
+.imagenUsuarioContainer img{
+    width: 100%;
+    border-radius: 50%;
+    background-color: white;
+}
+
+.textAreaContainer {
+    flex: 1;
+    padding-left: var(--spacing);
+}
+
+.textAreaContainer textarea {
+    width: 100%;
+    border: none;
+    resize: none;
+    font-size: 19px;
+    outline: #5aaa9a;
+}
+
+#enviarPostButton {
+    background-color: var(--greenish-blue);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 7px 20px;
+    cursor: pointer;
+}
+
+#enviarPostButton:disabled {
+    background-color: var(--grey);
+}
+

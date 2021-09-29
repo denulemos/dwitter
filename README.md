@@ -11,9 +11,12 @@ Pararse en la raiz del proyecto `./Dwitter` y en terminal, correr `npm install` 
 * Se eligio NodeJS con Express para el backend por la rapidez de desarrollo que brinda. Tambien porque su integracion con Socket.IO es muy simple. ✔️
 * Se eligio Pug como frontend engine ya que esta basado en Javascript y brinda una sintaxis muy sencilla para HTML, acelerando asi el desarrollo de este proyecto para que nos podamos concentrar puramente en el funcionamiento del backend ✔️
 * Se eligio MongoDB como Base de Datos. Al ser una base de datos no relacional, se brindaran los Schemas como documentacion, ya que no hay relaciones entre las entidades como pude suceder en una base de datos relacional. ✔️
+* Las llamadas a las API se haran con Axios y los Scripts del lado del cliente con JQuery o Javascript Vanilla.
 * El frontend se complementará con Bootstrap ✔️
 * Todavia no se definio a que plataforma será subido este proyecto.
 
+## Endpoints
+* `api/post` => Enviar dwit 
 ## Schemas
 Los mismos pueden variar a medida que se va desarrollando el proyecto
 ### User

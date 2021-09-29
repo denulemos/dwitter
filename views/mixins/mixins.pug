@@ -1,0 +1,10 @@
+// Los mixins son bloques reusables de codigo 
+
+mixin createPostForm(userLoggedIn)
+    .postFormContainer 
+        .imagenUsuarioContainer 
+            img(src=userLoggedIn.foto, alt="Foto perfil")
+        .textAreaContainer 
+            textarea#postTextArea(placeholder="¿Qué esta pasando?")
+            .buttonsContainer 
+                button#enviarPostButton(disabled="") Dwit

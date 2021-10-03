@@ -12,13 +12,21 @@ $("#postTextArea").keyup(event => {
 
 $("#enviarPostButton").click(() => {
     const boton = $(event.target);
-    const textBox = $("#postTextArea");
+    const textBox = $("#postTextArea")
 
-    axios.post('/api/posts', {
-        contenido: textBox.val()
-    })
+    const data = {
+      contenido: textBox.val()
+    }
+    
+
+    // Publicar Dwit y renderizarlo en la pagina
+    axios.post('/api/posts', {data})
     .then((response) => {
-      console.log(response);
+      const html = createPostHtml(response);
+    $(".postContainer").prepend(html);
+    textBox.val("");
+    boton.prop("disabled", true);
+
     })
     .catch((error) => {
       console.log(error);
@@ -26,3 +34,7 @@ $("#enviarPostButton").click(() => {
 
 
 });
+
+const createPostHtml = (data) => {
+  return `<div>${}</div>`;
+}

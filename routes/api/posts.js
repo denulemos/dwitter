@@ -12,14 +12,16 @@ router.get("/", (req, res, next) => {
 
 router.post("/", async(req, res, next) => {
     // Esta la request vacia?
-    if (!req.body.contenido){
+    if (!req.body.data.contenido){
+        console.log(req.body.data.contenido);
         return res.sendStatus(400);
     }
 
     const data = {
-        contenido :req.body.contenido,
+        contenido :req.body.data.contenido,
         autor: req.session.user
     }
+
 
     Post.create(data)
     .then(async (post) => {

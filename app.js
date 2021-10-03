@@ -22,14 +22,13 @@ app.use(express.urlencoded({extended: false}));
 
 // Rutas
 const loginRoute = require("./routes/loginRoutes");
-app.use("/login", loginRoute);
 const signupRoute = require("./routes/signupRoutes");
-app.use("/signup", signupRoute);
 const logoutRoute = require("./routes/logoutRoutes");
-app.use("/logout", logoutRoute);
-
-// Rutas API
 const postsApiRoute = require("./routes/api/posts");
+
+app.use("/logout", logoutRoute);
+app.use("/login", loginRoute);
+app.use("/signup", signupRoute);
 app.use("/api/posts", postsApiRoute);
 
 // Seteo motor visual
@@ -37,7 +36,7 @@ app.set("view engine", "pug");
 app.set("views", "views");
 
 const server = app.listen(port, () => {
-    console.log('I AM ALIVEEEEEE in port ' + port + " thanks mother")
+    console.log('I am alive and well in port ' + port + ", thanks mother")
 });
 
 // Root

@@ -16,6 +16,7 @@ router.get("/", (req, res, next) => {
 })
 
 router.post("/", async (req, res, next) => {
+    const displayName = req.body.displayName.trim();
     const usuario = req.body.usuario.trim();
     const email = req.body.email.trim();
     const password = req.body.password;

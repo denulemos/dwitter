@@ -35,6 +35,12 @@ nav a:hover {
     text-decoration: none;
 }
 
+button {
+    background-color: transparent;
+    border: none;
+    color:  var(--greenish-blue);
+}
+
 nav a.greenish {
     color: var(--greenish-blue);
 }
@@ -105,4 +111,49 @@ height: 50px;
 #enviarPostButton:disabled {
     background-color: var(--grey);
 }
+
+.post {
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing);
+    cursor: pointer;
+    border-bottom: 1px solid var(--grey);
+    flex-shrink: 0;
+}
+
+.mainContentContainer {
+    flex: 1;
+    display: flex;
+}
+
+.postContentContainer {
+    padding-left: var(--spacing);
+    display: flex;
+    flex-direction: column;
+    flex:1;
+}
+
+.displayName {
+    font-weight: bold;
+}
+
+.postFooter {
+    display: flex;
+    align-items: center;
+}
+
+.postBotonesContainer .postFooter {
+flex: 1;
+display: flex;
+}
+
+.postFooter .postBotonesContainer button {
+    padding: 0 5px;
+}
+
+.usuario, .date {
+   color: var(--grey);
+}
+
+
 

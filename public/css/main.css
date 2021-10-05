@@ -82,6 +82,7 @@ height: 50px;
 
 .imagenUsuarioContainer img{
     width: 100%;
+    margin-top: 10px;
     border-radius: 50%;
     background-color: white;
 }
@@ -133,13 +134,13 @@ height: 50px;
     flex:1;
 }
 
-.displayName {
-    font-weight: bold;
+.header a,
+.header span {
+    padding-right: 5px;
 }
 
-.postFooter {
-    display: flex;
-    align-items: center;
+.displayName {
+    font-weight: bold;
 }
 
 .postBotonesContainer .postFooter {
@@ -148,12 +149,22 @@ display: flex;
 }
 
 .postFooter .postBotonesContainer button {
-    padding: 0 5px;
+    margin: 0 15px;
+    
+}
+
+.postBotonesContainer {
+    text-align: right;   
+}
+
+.postBotonesContainer button:hover {
+    color: var(--grey);   
 }
 
 .usuario, .date {
    color: var(--grey);
 }
+
 
 
 

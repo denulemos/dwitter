@@ -11,6 +11,8 @@ app.use(express.urlencoded({
 // Obtener posts
 router.get("/", (req, res, next) => {
     Post.find()
+        .populate("autor") // Obtener el objeto entero del autor 
+        .sort({"createdAt": -1}) // Ordenar los dwits
         .then(response =>
             res.status(200).send(response)
         ).catch(e => console.log(e))

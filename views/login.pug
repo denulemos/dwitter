@@ -6,7 +6,7 @@ block content
         form(method="post") 
             p.errorMessage #{errorMessage}
 
-            input(type="text", name="usuario", placeholder="Usuario o email", value=usuario required="") 
-            input(type="password", name="password", placeholder="Contraseña", required="")
+            input(type="text", name="usuario", placeholder="Usuario o email", value="admin" required="") 
+            input(type="password",  name="password", placeholder="Contraseña", required="", value="admin")
             input(type="submit", value="Ingresar")
         a(href="/signup") ¿Necesitás una cuenta? ¡Registrate!

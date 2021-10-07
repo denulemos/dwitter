@@ -6,7 +6,7 @@ const PostSchema = new Schema({
     contenido: { type: String, trim: true },
     autor: { type: Schema.Types.ObjectId, ref: 'User' },
     pinned: Boolean,
-    // likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     // redweetsUsers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     // redweetData: { type: Schema.Types.ObjectId, ref: 'Post' },
     // respondeA: { type: Schema.Types.ObjectId, ref: 'Post' },

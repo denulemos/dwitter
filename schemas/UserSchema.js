@@ -10,7 +10,7 @@ const UserSchema = new Schema({
     foto: { type: String, default: "/images/profilePic.jpeg" },
     fotoPortada: { type: String },
     likes: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
-    // redweets: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
+    redweets: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
     // siguiendo: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     // seguidores: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 }, { timestamps: true });

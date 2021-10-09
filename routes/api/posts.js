@@ -82,20 +82,27 @@ router.put("/:id/like", async (req, res, next) => {
   res.status(200).send(post);
 });
 
+// Manejo de los redweets
 router.post("/:id/redweet", async (req, res, next) => {
-    const id = req.params.id;
+    const postid = req.params.id;
     const userId = req.session.user._id;
-    var postId = req.params.id;
-  
-    // El usuario esta likeando o deslikeando?
-    const liked = req.session.user.likes && req.session.user.likes.includes(id);
-  
-    const option = liked ? "$pull" : "$addToSet";
-  
-    // Insertar Like en la base, con [] inyectamos la variable, y actualizamos la sesion del usuario
+
+    // Intentamos eliminar el reweet, si podemos, era porque existia un redweet
+    const deletedPost = await Post.findOneAndDelete({autor: userId, redweetData: postid})
+    .catch(error => {console.log(error);  res.status(400);})
+
+    const option = deletedPost != null ? '$pull' : "$addToSet";
+    const redweet = deletedPost;
+
+    if (redweet == null){
+      redweet = await Post.create({ autor: userId, redweetData: postid})
+      .catch(error => {console.log(error);  res.status(400);})
+    }
+
+    // Actualizamos sesion del usuario
     req.session.user = await User.findByIdAndUpdate(
       userId,
-      { [option]: { likes: id } },
+      { [option]: { redweets: redweet._id } },
       { new: true } // devuelve el objeto actualizado
     ) 
       .catch((e) => {
@@ -103,18 +110,17 @@ router.post("/:id/redweet", async (req, res, next) => {
         res.sendStatus(400);
       });
   
-    // Insertar like en el post
     const post = await Post.findByIdAndUpdate(
       postId,
-      { [option]: { likes: userId } },
+      { [option]: { redweetsUsers: userId } },
       { new: true }
     ) 
       .catch((e) => {
         console.log(e);
         res.sendStatus(400);
       });
-  
-    res.status(200).send(post);
+
+    res.status(200).send();
   });
 
 module.exports = router;

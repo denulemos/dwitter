@@ -22,7 +22,7 @@ $("#enviarPostButton").click(() => {
     // Publicar Dwit y renderizarlo en la pagina
     axios.post('/api/posts', {data})
     .then((response) => {
-      const html = createPostHtml(response.data);
+    const html = createPostHtml(response.data);
     $(".postContainer").prepend(html);
     textBox.val("");
     boton.prop("disabled", true);
@@ -35,12 +35,73 @@ $("#enviarPostButton").click(() => {
 
 });
 
+// Se maneja distinto el click, ya que el likeButton es un elemento dinamico, se maneja a nivel document
+$(document).on("click", ".likeButton", (event) => {
+  const boton = $(event.target);
+  const id = getElementId(boton);
+
+  axios.put(`/api/posts/${id}/like`)
+  .then((data) => {
+    boton.find("span").text(data.data.likes.length || "");
+
+    // Chequear si el usuario likeo el post
+    if (data.data.likes.includes(userLoggedIn._id)){
+      boton.addClass("active");
+    }
+    else {
+      boton.removeClass("active");
+    }
+  
+  })
+  .catch((error) => {
+    console.log(error);
+  })
+
+
+});
+
+// Redweet
+$(document).on("click", ".redweetButton", (event) => {
+  const boton = $(event.target);
+  const id = getElementId(boton);
+
+  axios.post(`/api/posts/${id}/redweet`)
+  .then((data) => {
+    boton.find("span").text(data.data.likes.length || "");
+
+    // Chequear si el usuario likeo el post
+    if (data.data.likes.includes(userLoggedIn._id)){
+      boton.addClass("active");
+    }
+    else {
+      boton.removeClass("active");
+    }
+  
+  })
+  .catch((error) => {
+    console.log(error);
+  })
+
+
+});
+
+const getElementId = (element) => {
+  const esRoot = element.hasClass("post");
+  const rootElement = esRoot ? element : element.closest('.post');
+  const id = rootElement.data().id;
+
+  return id;
+
+};
+
 const createPostHtml = (data) => {
 
   const autor = data.autor;
   const timestamp = calculadoraTiempo(new Date(), new Date(data.createdAt));
 
-  return `<div class="post">
+  const likeButtonActiveClass = data.likes.includes(userLoggedIn._id) ? "active" : "";
+
+  return `<div class="post" data-id='${data._id}'>
   <div class="mainContentContainer">
   <div class="imagenUsuarioContainer">
   <img src='${autor.foto}'>
@@ -55,16 +116,22 @@ const createPostHtml = (data) => {
     <span>${data.contenido}</span>
   </div>
   <div class="postFooter">
-  <div class="postBotonesContainer">
-  <button>
+  <div class="containerActions">
+  <div class="postBotonesContainer green"> 
+  <button >
   <i class="far fa-comment-alt"></i>
-  </button>
-  <button>
+  </button> 
+  </div>
+  <div class="postBotonesContainer green">  
+  <button class='redweetButton'>
   <i class="fas fa-retweet"></i>
-  </button>
-  <button>
+  </button></div>
+ <div class="postBotonesContainer red">
+ <button class='likeButton ${likeButtonActiveClass}'>
   <i class="far fa-heart"></i>
-  </button>
+  <span>${data.likes.length || ""}</span>
+  </button> </div>
+  
   </div>
   </div>
   </div>

@@ -1,50 +1,120 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const User = require('../../schemas/UserSchema');
-const Post = require('../../schemas/PostSchema');
+const User = require("../../schemas/UserSchema");
+const Post = require("../../schemas/PostSchema");
 const router = express.Router();
 
-app.use(express.urlencoded({
-    extended: false
-}));
+app.use(
+  express.urlencoded({
+    extended: false,
+  })
+);
 
 // Obtener posts
 router.get("/", (req, res, next) => {
-    Post.find()
-        .populate("autor") // Obtener el objeto entero del autor 
-        .sort({"createdAt": -1}) // Ordenar los dwits
-        .then(response =>
-            res.status(200).send(response)
-        ).catch(e => console.log(e))
-})
+  Post.find()
+    .populate("autor") // Obtener el objeto entero del autor
+    .sort({ createdAt: -1 }) // Ordenar los dwits
+    .then((response) => res.status(200).send(response))
+    .catch((e) => console.log(e));
+});
 
 router.post("/", async (req, res, next) => {
-    // Esta la request vacia?
-    if (!req.body.data.contenido) {
-        console.log(req.body.data.contenido);
-        return res.sendStatus(400);
-    }
+  // Esta la request vacia?
+  if (!req.body.data.contenido) {
+    console.log(req.body.data.contenido);
+    return res.sendStatus(400);
+  }
 
-    const data = {
-        contenido: req.body.data.contenido,
-        autor: req.session.user
-    }
+  const data = {
+    contenido: req.body.data.contenido,
+    autor: req.session.user,
+  };
 
+  Post.create(data)
+    .then(async (post) => {
+      // Popular el campo Autor con los datos del usuario cuya sesion esta activa
+      post = await User.populate(post, {
+        path: "autor",
+      });
 
-    Post.create(data)
-        .then(async (post) => {
-            // Popular el campo Autor con los datos del usuario cuya sesion esta activa
-            post = await User.populate(post, {
-                path: "autor"
-            });
+      // 201 Created
+      res.status(201).send(post);
+    })
+    .catch((e) => {
+      console.log(e);
+      res.sendStatus(400);
+    });
+});
 
-            // 201 Created
-            res.status(201).send(post);
-        })
-        .catch((e) => {
-            console.log(e);
-            res.sendStatus(400);
-        })
-})
+router.put("/:id/like", async (req, res, next) => {
+  const id = req.params.id;
+  const userId = req.session.user._id;
+  var postId = req.params.id;
+
+  // El usuario esta likeando o deslikeando?
+  const liked = req.session.user.likes && req.session.user.likes.includes(id);
+
+  const option = liked ? "$pull" : "$addToSet";
+
+  // Insertar Like en la base, con [] inyectamos la variable, y actualizamos la sesion del usuario
+  req.session.user = await User.findByIdAndUpdate(
+    userId,
+    { [option]: { likes: id } },
+    { new: true } // devuelve el objeto actualizado
+  ) 
+    .catch((e) => {
+      console.log(e);
+      res.sendStatus(400);
+    });
+
+  // Insertar like en el post
+  const post = await Post.findByIdAndUpdate(
+    postId,
+    { [option]: { likes: userId } },
+    { new: true }
+  ) 
+    .catch((e) => {
+      console.log(e);
+      res.sendStatus(400);
+    });
+
+  res.status(200).send(post);
+});
+
+router.post("/:id/redweet", async (req, res, next) => {
+    const id = req.params.id;
+    const userId = req.session.user._id;
+    var postId = req.params.id;
+  
+    // El usuario esta likeando o deslikeando?
+    const liked = req.session.user.likes && req.session.user.likes.includes(id);
+  
+    const option = liked ? "$pull" : "$addToSet";
+  
+    // Insertar Like en la base, con [] inyectamos la variable, y actualizamos la sesion del usuario
+    req.session.user = await User.findByIdAndUpdate(
+      userId,
+      { [option]: { likes: id } },
+      { new: true } // devuelve el objeto actualizado
+    ) 
+      .catch((e) => {
+        console.log(e);
+        res.sendStatus(400);
+      });
+  
+    // Insertar like en el post
+    const post = await Post.findByIdAndUpdate(
+      postId,
+      { [option]: { likes: userId } },
+      { new: true }
+    ) 
+      .catch((e) => {
+        console.log(e);
+        res.sendStatus(400);
+      });
+  
+    res.status(200).send(post);
+  });
 
 module.exports = router;

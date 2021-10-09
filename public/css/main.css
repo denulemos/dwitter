@@ -41,6 +41,11 @@ button {
     color:  var(--greenish-blue);
 }
 
+button i,
+button span {
+    pointer-events: none;
+}
+
 nav a.greenish {
     color: var(--greenish-blue);
 }
@@ -143,7 +148,17 @@ height: 50px;
     font-weight: bold;
 }
 
-.postBotonesContainer .postFooter {
+.displayName:hover {
+    color: black;
+}
+
+.containerActions {
+    justify-content: end;
+    display: flex;
+    margin-top: 10px;
+}
+
+.containerActions .postFooter {
 flex: 1;
 display: flex;
 }
@@ -163,6 +178,14 @@ display: flex;
 
 .usuario, .date {
    color: var(--grey);
+}
+
+.postBotonesContainer.red button.active {
+    color: red;
+}
+
+.likeButton:focus {
+    outline: none;
 }
 
 

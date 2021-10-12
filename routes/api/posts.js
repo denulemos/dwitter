@@ -14,8 +14,12 @@ app.use(
 router.get("/", (req, res, next) => {
   Post.find()
     .populate("autor") // Obtener el objeto entero del autor
+    .populate("redweetData")
     .sort({ createdAt: -1 }) // Ordenar los dwits
-    .then((response) => res.status(200).send(response))
+    .then(async response => {
+      response = await User.populate(response, {path: "redweetData.autor"});
+      res.status(200).send(response);
+    })
     .catch((e) => console.log(e));
 });
 
@@ -84,18 +88,18 @@ router.put("/:id/like", async (req, res, next) => {
 
 // Manejo de los redweets
 router.post("/:id/redweet", async (req, res, next) => {
-    const postid = req.params.id;
+    const postId = req.params.id;
     const userId = req.session.user._id;
 
     // Intentamos eliminar el reweet, si podemos, era porque existia un redweet
-    const deletedPost = await Post.findOneAndDelete({autor: userId, redweetData: postid})
+    const deletedPost = await Post.findOneAndDelete({autor: userId, redweetData: postId})
     .catch(error => {console.log(error);  res.status(400);})
 
     const option = deletedPost != null ? '$pull' : "$addToSet";
-    const redweet = deletedPost;
+    let redweet = deletedPost;
 
     if (redweet == null){
-      redweet = await Post.create({ autor: userId, redweetData: postid})
+      redweet = await Post.create({ autor: userId, redweetData: postId})
       .catch(error => {console.log(error);  res.status(400);})
     }
 
@@ -120,7 +124,7 @@ router.post("/:id/redweet", async (req, res, next) => {
         res.sendStatus(400);
       });
 
-    res.status(200).send();
+    res.status(200).send(post);
   });
 
 module.exports = router;

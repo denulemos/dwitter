@@ -1,6 +1,12 @@
-$("#postTextArea").keyup(event => {
-    var value = $(event.target).val().trim();
-    const enviarPostButton = $("#enviarPostButton");
+$("#postTextArea, #respuestaTextArea").keyup(event => {
+    const textbox = $(event.target);
+    const value = $(event.target).val().trim();
+    
+    // Chequeamos si es el modal de respuesta
+    const isModal = textbox.parents(".modal").length == 1;
+    const enviarPostButton = isModal ? $("#responderButton") : $("#enviarPostButton");
+
+
     if (value == ""){
         enviarPostButton.prop("disabled", true);
         return;
@@ -10,7 +16,7 @@ $("#postTextArea").keyup(event => {
 
 });
 
-$("#enviarPostButton").click(() => {
+$("#enviarPostButton").click((event) => {
     const boton = $(event.target);
     const textBox = $("#postTextArea")
 
@@ -64,13 +70,12 @@ $(document).on("click", ".likeButton", (event) => {
 $(document).on("click", ".redweetButton", (event) => {
   const boton = $(event.target);
   const id = getElementId(boton);
-
   axios.post(`/api/posts/${id}/redweet`)
   .then((data) => {
-    boton.find("span").text(data.data.likes.length || "");
+    boton.find("span").text(data.data.redweetsUsers.length || "");
 
     // Chequear si el usuario likeo el post
-    if (data.data.likes.includes(userLoggedIn._id)){
+    if (data.data.redweetsUsers.includes(userLoggedIn._id)){
       boton.addClass("active");
     }
     else {
@@ -96,12 +101,31 @@ const getElementId = (element) => {
 
 const createPostHtml = (data) => {
 
+  // Es un RD si posee el objeto RedweetData
+  const isRedweet = data.redweetData !== undefined;
+  const redweetAutor = isRedweet ? data.autor.usuario : null;
+  data = isRedweet ? data.redweetData : data;
+
   const autor = data.autor;
   const timestamp = calculadoraTiempo(new Date(), new Date(data.createdAt));
 
   const likeButtonActiveClass = data.likes.includes(userLoggedIn._id) ? "active" : "";
+  const redweetButtonActiveClass = data.redweetsUsers.includes(userLoggedIn._id) ? "active" : "";
+
+  let redweetText = '';
+
+  if (isRedweet){
+    redweetText =  `<span>
+   <i class='fas fa-retweet'></i>
+   Retweeted by <a href='/profile/${redweetAutor}'>@${redweetAutor}</a>    
+</span>`
+  }
+
 
   return `<div class="post" data-id='${data._id}'>
+  <div class="postActionContainer">
+  ${redweetText}
+  </div>
   <div class="mainContentContainer">
   <div class="imagenUsuarioContainer">
   <img src='${autor.foto}'>
@@ -118,13 +142,14 @@ const createPostHtml = (data) => {
   <div class="postFooter">
   <div class="containerActions">
   <div class="postBotonesContainer green"> 
-  <button >
+  <button data-toggle='modal' data-target="#responderModal">
   <i class="far fa-comment-alt"></i>
   </button> 
   </div>
   <div class="postBotonesContainer green">  
-  <button class='redweetButton'>
+  <button class='redweetButton ${redweetButtonActiveClass}'>
   <i class="fas fa-retweet"></i>
+  <span>${data.redweetsUsers.length || ""}</span>
   </button></div>
  <div class="postBotonesContainer red">
  <button class='likeButton ${likeButtonActiveClass}'>

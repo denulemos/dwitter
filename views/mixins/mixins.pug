@@ -5,6 +5,24 @@ mixin createPostForm(userLoggedIn)
         .imagenUsuarioContainer 
             img(src=userLoggedIn.foto, alt="Foto perfil")
         .textAreaContainer 
-            textarea#postTextArea(placeholder="¿Qué esta pasando?")
+            textarea#postTextArea(placeholder="¿Qué contás?")
             .buttonsContainer 
                 button#enviarPostButton(disabled="") Dwit
+
+mixin responderModal(userLoggedIn)
+    #responderModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='responderModalLabel', aria-hidden='true')
+        .modal-dialog.modal-dialog-centered(role='document')
+            .modal-content
+                .modal-header
+                    h5#responderTitle.modal-title Responder
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    .postFormContainer 
+                        .imagenUsuarioContainer 
+                            img(src=userLoggedIn.foto, alt="Foto perfil")
+                        .textAreaContainer 
+                            textarea#respuestaTextArea(placeholder="¿Qué contás?")
+                .modal-footer
+                    button.btn.btn-secondary(type='button', data-dismiss='modal') Cancelar
+                    button#responderButton.btn.btn-primary(type='button', disabled="") Responder

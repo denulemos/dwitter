@@ -11,16 +11,16 @@ app.use(
 );
 
 // Obtener posts
-router.get("/", (req, res, next) => {
-  Post.find()
-    .populate("autor") // Obtener el objeto entero del autor
-    .populate("redweetData")
-    .sort({ createdAt: -1 }) // Ordenar los dwits
-    .then(async response => {
-      response = await User.populate(response, {path: "redweetData.autor"});
-      res.status(200).send(response);
-    })
-    .catch((e) => console.log(e));
+router.get("/", async (req, res, next) => {
+    const results = await getPosts({});
+    res.status(200).send(results);
+});
+
+// Obtener un post en especifico por ID
+router.get("/:id", async (req, res, next) => {
+  const id = req.params.id;
+  const results = await getPosts({_id: id});
+  res.status(200).send(results[0]); // Devuelve un array de elementos donde solo habrá siempre 1
 });
 
 router.post("/", async (req, res, next) => {
@@ -34,6 +34,12 @@ router.post("/", async (req, res, next) => {
     contenido: req.body.data.contenido,
     autor: req.session.user,
   };
+
+  console.log(req.body);
+
+  if (req.body.data.respondeA){
+    data.respondeA = req.body.data.respondeA;
+  }
 
   Post.create(data)
     .then(async (post) => {
@@ -126,5 +132,15 @@ router.post("/:id/redweet", async (req, res, next) => {
 
     res.status(200).send(post);
   });
+
+  const getPosts = async (filter) => {
+    const results = await Post.find(filter)
+    .populate("autor") // Obtener el objeto entero del autor
+    .populate("redweetData")
+    .sort({ createdAt: -1 }) // Ordenar los dwits
+    .catch((e) => console.log(e));
+
+    return await User.populate(results, {path: "redweetData.autor"});
+  }
 
 module.exports = router;

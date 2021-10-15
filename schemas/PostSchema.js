@@ -9,7 +9,7 @@ const PostSchema = new Schema({
     likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     redweetsUsers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     redweetData: { type: Schema.Types.ObjectId, ref: 'Post' }, //El redweet es un post duplicado nuevo
-    // respondeA: { type: Schema.Types.ObjectId, ref: 'Post' },
+    respondeA: { type: Schema.Types.ObjectId, ref: 'Post' },
     // pinned: Boolean
 }, { timestamps: true });
 

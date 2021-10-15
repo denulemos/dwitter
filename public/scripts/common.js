@@ -1,105 +1,129 @@
-$("#postTextArea, #respuestaTextArea").keyup(event => {
-    const textbox = $(event.target);
-    const value = $(event.target).val().trim();
-    
-    // Chequeamos si es el modal de respuesta
-    const isModal = textbox.parents(".modal").length == 1;
-    const enviarPostButton = isModal ? $("#responderButton") : $("#enviarPostButton");
+$("#postTextArea, #respuestaTextArea").keyup((event) => {
+  const textbox = $(event.target);
+  const value = $(event.target).val().trim();
 
+  // Chequeamos si es el modal de respuesta
+  const isModal = textbox.parents(".modal").length == 1;
+  const enviarPostButton = isModal
+    ? $("#responderButton")
+    : $("#enviarPostButton");
 
-    if (value == ""){
-        enviarPostButton.prop("disabled", true);
-        return;
-    }
+  if (value == "") {
+    enviarPostButton.prop("disabled", true);
+    return;
+  }
 
-    enviarPostButton.prop("disabled", false);
-
+  enviarPostButton.prop("disabled", false);
 });
 
-$("#enviarPostButton").click((event) => {
-    const boton = $(event.target);
-    const textBox = $("#postTextArea")
+$("#enviarPostButton, #responderButton").click((event) => {
+  const boton = $(event.target);
+  const isModal = boton.parents(".modal").length == 1;
+  const textBox = isModal ? $("#respuestaTextArea") : $("#postTextArea");
 
-    const data = {
-      contenido: textBox.val()
-    }
-    
+  const data = {
+    contenido: textBox.val(),
+  };
 
-    // Publicar Dwit y renderizarlo en la pagina
-    axios.post('/api/posts', {data})
+  if (isModal) {
+    const id = boton.data().id;
+    if (id == null) return console.log("error with button id");
+    data.respondeA = id;
+  }
+
+  // Publicar Dwit y renderizarlo en la pagina
+  axios
+    .post("/api/posts", { data })
     .then((response) => {
-    const html = createPostHtml(response.data);
-    $(".postContainer").prepend(html);
-    textBox.val("");
-    boton.prop("disabled", true);
-
+      if (response.data.respondeA) {
+        location.reload();
+      } else {
+        const html = createPostHtml(response.data);
+        $(".postContainer").prepend(html);
+        textBox.val("");
+        boton.prop("disabled", true);
+      }
     })
     .catch((error) => {
       console.log(error);
     });
-
-
 });
+
+// Evento nativo de bootstrap
+$("#responderModal").on("show.bs.modal", (event) => {
+  const boton = $(event.relatedTarget);
+  const id = getElementId(boton);
+  $("#responderButton").data("id", id);
+
+  axios
+    .get("/api/posts/" + id)
+    .then((response) => {
+      outputPosts(response, $("#originalPostContainer"));
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
+
+$("#responderModal").on("hidden.bs.modal", () =>
+  $("#originalPostContainer").html("")
+);
 
 // Se maneja distinto el click, ya que el likeButton es un elemento dinamico, se maneja a nivel document
 $(document).on("click", ".likeButton", (event) => {
   const boton = $(event.target);
   const id = getElementId(boton);
 
-  axios.put(`/api/posts/${id}/like`)
-  .then((data) => {
-    boton.find("span").text(data.data.likes.length || "");
+  axios
+    .put(`/api/posts/${id}/like`)
+    .then((data) => {
+      boton.find("span").text(data.data.likes.length || "");
 
-    // Chequear si el usuario likeo el post
-    if (data.data.likes.includes(userLoggedIn._id)){
-      boton.addClass("active");
-    }
-    else {
-      boton.removeClass("active");
-    }
-  
-  })
-  .catch((error) => {
-    console.log(error);
-  })
-
-
+      // Chequear si el usuario likeo el post
+      if (data.data.likes.includes(userLoggedIn._id)) {
+        boton.addClass("active");
+      } else {
+        boton.removeClass("active");
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 });
 
 // Redweet
 $(document).on("click", ".redweetButton", (event) => {
   const boton = $(event.target);
   const id = getElementId(boton);
-  axios.post(`/api/posts/${id}/redweet`)
-  .then((data) => {
-    boton.find("span").text(data.data.redweetsUsers.length || "");
+  axios
+    .post(`/api/posts/${id}/redweet`)
+    .then((data) => {
+      boton.find("span").text(data.data.redweetsUsers.length || "");
 
-    // Chequear si el usuario likeo el post
-    if (data.data.redweetsUsers.includes(userLoggedIn._id)){
-      boton.addClass("active");
-    }
-    else {
-      boton.removeClass("active");
-    }
-  
-  })
-  .catch((error) => {
-    console.log(error);
-  })
-
-
+      // Chequear si el usuario likeo el post
+      if (data.data.redweetsUsers.includes(userLoggedIn._id)) {
+        boton.addClass("active");
+      } else {
+        boton.removeClass("active");
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 });
 
 const getElementId = (element) => {
   const esRoot = element.hasClass("post");
-  const rootElement = esRoot ? element : element.closest('.post');
+  const rootElement = esRoot ? element : element.closest(".post");
   const id = rootElement.data().id;
 
   return id;
-
 };
 
 const createPostHtml = (data) => {
+  if (data.contenido === undefined) {
+    data = data.data;
+  }
 
   // Es un RD si posee el objeto RedweetData
   const isRedweet = data.redweetData !== undefined;
@@ -109,18 +133,21 @@ const createPostHtml = (data) => {
   const autor = data.autor;
   const timestamp = calculadoraTiempo(new Date(), new Date(data.createdAt));
 
-  const likeButtonActiveClass = data.likes.includes(userLoggedIn._id) ? "active" : "";
-  const redweetButtonActiveClass = data.redweetsUsers.includes(userLoggedIn._id) ? "active" : "";
+  const likeButtonActiveClass = data.likes.includes(userLoggedIn._id)
+    ? "active"
+    : "";
+  const redweetButtonActiveClass = data.redweetsUsers.includes(userLoggedIn._id)
+    ? "active"
+    : "";
 
-  let redweetText = '';
+  let redweetText = "";
 
-  if (isRedweet){
-    redweetText =  `<span>
+  if (isRedweet) {
+    redweetText = `<span>
    <i class='fas fa-retweet'></i>
    Retweeted by <a href='/profile/${redweetAutor}'>@${redweetAutor}</a>    
-</span>`
+</span>`;
   }
-
 
   return `<div class="post" data-id='${data._id}'>
   <div class="postActionContainer">
@@ -132,7 +159,9 @@ const createPostHtml = (data) => {
   </div>
   <div class="postContentContainer">
   <div class="header">
-    <a class="displayName" href='/profile/${autor.usuario}'>${autor.displayName}</a>
+    <a class="displayName" href='/profile/${autor.usuario}'>${
+    autor.displayName
+  }</a>
     <span class="usuario">@${autor.usuario}</span>
     <span class="date">${timestamp}</span>
   </div>
@@ -162,10 +191,10 @@ const createPostHtml = (data) => {
   </div>
   </div>
   </div>`;
-}
+};
 
-const calculadoraTiempo = (current, previous) =>  {
-
+// Calculamos el tiempo de cada dwit
+const calculadoraTiempo = (current, previous) => {
   var msPerMinute = 60 * 1000;
   var msPerHour = msPerMinute * 60;
   var msPerDay = msPerHour * 24;
@@ -175,28 +204,33 @@ const calculadoraTiempo = (current, previous) =>  {
   var elapsed = current - previous;
 
   if (elapsed < msPerMinute) {
-      if(elapsed/1000 < 30) return "Hace un momento";
-      
-      return 'Hace ' + Math.round(elapsed/1000) + ' segundos';   
-  }
+    if (elapsed / 1000 < 30) return "Hace un momento";
 
-  else if (elapsed < msPerHour) {
-       return 'Hace ' + Math.round(elapsed/msPerMinute) + ' minutos';   
+    return "Hace " + Math.round(elapsed / 1000) + " segundos";
+  } else if (elapsed < msPerHour) {
+    return "Hace " + Math.round(elapsed / msPerMinute) + " minutos";
+  } else if (elapsed < msPerDay) {
+    return "Hace " + Math.round(elapsed / msPerHour) + " horas";
+  } else if (elapsed < msPerMonth) {
+    return "Hace " + Math.round(elapsed / msPerDay) + " dias";
+  } else if (elapsed < msPerYear) {
+    return "Hace " + Math.round(elapsed / msPerMonth) + " meses";
+  } else {
+    return "Hace " + Math.round(elapsed / msPerYear) + " años";
   }
+};
 
-  else if (elapsed < msPerDay ) {
-       return 'Hace ' + Math.round(elapsed/msPerHour ) + ' horas';   
+const outputPosts = (resultados, container) => {
+  container.html(""); // Vaciar contenedor
+  if (!Array.isArray(resultados)) {
+    resultados = [resultados];
   }
+  resultados.forEach((resultado) => {
+    const html = createPostHtml(resultado);
+    container.append(html);
+  });
 
-  else if (elapsed < msPerMonth) {
-      return 'Hace ' +Math.round(elapsed/msPerDay) + ' dias';   
+  if (resultados.length == 0) {
+    container.append("<span class='vacio'>No hay Dwits encontrados</span>");
   }
-
-  else if (elapsed < msPerYear) {
-      return 'Hace ' +Math.round(elapsed/msPerMonth) + ' meses';   
-  }
-
-  else {
-      return 'Hace ' +Math.round(elapsed/msPerYear ) + ' años';   
-  }
-}
+};

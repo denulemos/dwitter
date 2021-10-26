@@ -213,6 +213,17 @@ display: flex;
     margin-bottom: 3px;
 }
 
+.respuestaFlag {
+    margin-bottom: 5px;
+}
+
+.respuestaFlag a {
+    color: var(--greenish-blue);
+}
+
+
+
+
 
 
 

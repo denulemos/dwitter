@@ -112,6 +112,16 @@ $(document).on("click", ".redweetButton", (event) => {
     });
 });
 
+$(document).on("click", ".post", (event) => {
+  const element = $(event.target);
+  const id = getElementId(element);
+
+  // !element.is(Button) == el elemento no es un tipo button
+  if (id !== undefined && !element.is("button")) {
+    window.location.href = '/post/' + id
+  }
+});
+
 const getElementId = (element) => {
   const esRoot = element.hasClass("post");
   const rootElement = esRoot ? element : element.closest(".post");
@@ -149,6 +159,12 @@ const createPostHtml = (data) => {
 </span>`;
   }
 
+  var respuestaFlag = "";
+  if (data.respondeA){
+    const respondeAUsername = data.respondeA.autor.usuario;
+    respuestaFlag = `<div class='respuestaFlag'> Responde a <a href='/profile/${respondeAUsername}'>@${respondeAUsername}</a> </div>`;
+  }
+
   return `<div class="post" data-id='${data._id}'>
   <div class="postActionContainer">
   ${redweetText}
@@ -165,6 +181,7 @@ const createPostHtml = (data) => {
     <span class="usuario">@${autor.usuario}</span>
     <span class="date">${timestamp}</span>
   </div>
+  ${respuestaFlag}
   <div class="postBody">
     <span>${data.contenido}</span>
   </div>

@@ -10,7 +10,6 @@ const PostSchema = new Schema({
     redweetsUsers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     redweetData: { type: Schema.Types.ObjectId, ref: 'Post' }, //El redweet es un post duplicado nuevo
     respondeA: { type: Schema.Types.ObjectId, ref: 'Post' },
-    // pinned: Boolean
 }, { timestamps: true });
 
 var Post = mongoose.model('Post', PostSchema);

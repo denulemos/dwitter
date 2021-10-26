@@ -134,12 +134,14 @@ router.post("/:id/redweet", async (req, res, next) => {
   });
 
   const getPosts = async (filter) => {
-    const results = await Post.find(filter)
+    var results = await Post.find(filter)
     .populate("autor") // Obtener el objeto entero del autor
     .populate("redweetData")
+    .populate("respondeA")
     .sort({ createdAt: -1 }) // Ordenar los dwits
     .catch((e) => console.log(e));
 
+    results = await User.populate(results, {path: "respondeA.autor"});
     return await User.populate(results, {path: "redweetData.autor"});
   }
 

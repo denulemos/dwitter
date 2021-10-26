@@ -25,11 +25,13 @@ const loginRoute = require("./routes/loginRoutes");
 const signupRoute = require("./routes/signupRoutes");
 const logoutRoute = require("./routes/logoutRoutes");
 const postsApiRoute = require("./routes/api/posts");
+const postPageRoute = require("./routes/postRoutes");
 
 app.use("/logout", logoutRoute);
 app.use("/login", loginRoute);
 app.use("/signup", signupRoute);
 app.use("/api/posts", postsApiRoute);
+app.use("/post", postPageRoute);
 
 // Seteo motor visual
 app.set("view engine", "pug");

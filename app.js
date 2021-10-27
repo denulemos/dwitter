@@ -31,7 +31,7 @@ app.use("/logout", logoutRoute);
 app.use("/login", loginRoute);
 app.use("/signup", signupRoute);
 app.use("/api/posts", postsApiRoute);
-app.use("/post", postPageRoute);
+app.use("/post",middleware.requireLogin, postPageRoute);
 
 // Seteo motor visual
 app.set("view engine", "pug");

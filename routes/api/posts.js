@@ -19,8 +19,19 @@ router.get("/", async (req, res, next) => {
 // Obtener un post en especifico por ID
 router.get("/:id", async (req, res, next) => {
   const id = req.params.id;
-  const results = await getPosts({_id: id});
-  res.status(200).send(results[0]); // Devuelve un array de elementos donde solo habrá siempre 1
+  var postData = await getPosts({_id: id});
+  postData = postData[0];
+  var results = {
+    postData: postData
+  }
+
+  if (postData.respondeA !== undefined) {
+    results.respondeA = postData.respondeA;
+  }
+
+  results.respuestas = await getPosts({respondeA: id});
+
+  res.status(200).send(results); // Devuelve un array de elementos donde solo habrá siempre 1
 });
 
 router.post("/", async (req, res, next) => {

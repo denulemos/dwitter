@@ -58,7 +58,7 @@ $("#responderModal").on("show.bs.modal", (event) => {
   axios
     .get("/api/posts/" + id)
     .then((response) => {
-      outputPosts(response, $("#originalPostContainer"));
+      outputPosts(response.postData, $("#originalPostContainer"));
     })
     .catch((error) => {
       console.log(error);
@@ -244,6 +244,29 @@ const outputPosts = (resultados, container) => {
   }
   resultados.forEach((resultado) => {
     const html = createPostHtml(resultado);
+    container.append(html);
+  });
+
+  if (resultados.length == 0) {
+    container.append("<span class='vacio'>No hay Dwits encontrados</span>");
+  }
+};
+
+// Obtener las respuestas de un mismo dwit aunque no sean nuestras
+const outputPostsWithReplies = (resultados, container) => {
+  container.html(""); // Vaciar contenedor
+
+  // Validaciones
+  if (resultados.respondeA !== undefined && resultados.respondeA._id !== undefined) {
+    let html = createPostHtml(resultados.respondeA);
+    container.append(html);
+  }
+
+  const mainHtml = createPostHtml(resultados.postData);
+  container.append(mainHtml);
+
+  resultados.respuestas.forEach((resultado) => {
+    let html = createPostHtml(resultado);
     container.append(html);
   });
 

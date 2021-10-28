@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const User = require("../../schemas/UserSchema");
 const Post = require("../../schemas/PostSchema");
+const { route } = require("express/lib/application");
 const router = express.Router();
 
 app.use(
@@ -143,6 +144,17 @@ router.post("/:id/redweet", async (req, res, next) => {
 
     res.status(200).send(post);
   });
+
+router.delete("/:id", async (req,res,next) => {
+  Post.findByIdAndDelete(req.params.id)
+  .then(() => {
+    res.sendStatus(200)
+  })
+  .catch((e) => {
+    console.log(e);
+    res.sendStatus(400);
+  })
+});
 
   const getPosts = async (filter) => {
     var results = await Post.find(filter)

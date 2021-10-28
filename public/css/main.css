@@ -221,9 +221,43 @@ display: flex;
     color: var(--greenish-blue);
 }
 
+.post.largeFont .postBody,
+.post.largeFont .postFooter {
+    font-size: 23px;
+}
 
+.postContentContainer .header {
+    display: flex;
+}
 
+.header .date {
+    flex:1;
+}
 
+.errorMessage {
+    padding: var(--spacing);
+    
+}
+
+.profileHeaderContainer .coverPhotoContainer {
+    height: 180px;
+    background-color: var(--greenish-blue);
+    position: relative;
+}
+
+.profileHeaderContainer .imagenUsuarioContainer {
+    height: 132px;
+    width: 132px;
+    margin-left: var(--spacing);
+    position: absolute;
+    bottom: -66px;
+
+}
+
+.profileHeaderContainer .imagenUsuarioContainer img{
+    border: 4px solid #fff;
+
+}
 
 
 

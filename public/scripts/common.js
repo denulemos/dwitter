@@ -69,6 +69,26 @@ $("#responderModal").on("hidden.bs.modal", () =>
   $("#originalPostContainer").html("")
 );
 
+$("#borrarModal").on("show.bs.modal", (event) => {
+  const boton = $(event.relatedTarget);
+  const id = getElementId(boton);
+  $("#borrarButton").data("id", id);
+});
+
+$("#borrarButton").click((event) => {
+  const id = $(event.target).data("id");
+
+  axios
+    .delete("/api/posts/" + id)
+    .then(() => {
+      // Cuando el post se elimina la pagina se recarga
+      location.reload();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
+
 // Se maneja distinto el click, ya que el likeButton es un elemento dinamico, se maneja a nivel document
 $(document).on("click", ".likeButton", (event) => {
   const boton = $(event.target);
@@ -130,7 +150,7 @@ const getElementId = (element) => {
   return id;
 };
 
-const createPostHtml = (data) => {
+const createPostHtml = (data, largeFont = false) => {
   if (data.contenido === undefined) {
     data = data.data;
   }
@@ -149,6 +169,7 @@ const createPostHtml = (data) => {
   const redweetButtonActiveClass = data.redweetsUsers.includes(userLoggedIn._id)
     ? "active"
     : "";
+  var largeFontClass = largeFont ? "largeFont" : "";
 
   let redweetText = "";
 
@@ -165,7 +186,13 @@ const createPostHtml = (data) => {
     respuestaFlag = `<div class='respuestaFlag'> Responde a <a href='/profile/${respondeAUsername}'>@${respondeAUsername}</a> </div>`;
   }
 
-  return `<div class="post" data-id='${data._id}'>
+  //Mostrar boton para borrar Dwit
+  var buttons = "";
+  if (data.autor._id === userLoggedIn._id) {
+    buttons = `<button data-id="${data._id}" data-toggle="modal" data-target="#borrarModal"><i class='fas fa-times'></i></button>`;
+  }
+
+  return `<div class="post ${largeFontClass}" data-id='${data._id}'>
   <div class="postActionContainer">
   ${redweetText}
   </div>
@@ -180,6 +207,7 @@ const createPostHtml = (data) => {
   }</a>
     <span class="usuario">@${autor.usuario}</span>
     <span class="date">${timestamp}</span>
+    ${buttons}
   </div>
   ${respuestaFlag}
   <div class="postBody">
@@ -262,7 +290,7 @@ const outputPostsWithReplies = (resultados, container) => {
     container.append(html);
   }
 
-  const mainHtml = createPostHtml(resultados.postData);
+  const mainHtml = createPostHtml(resultados.postData, true);
   container.append(mainHtml);
 
   resultados.respuestas.forEach((resultado) => {

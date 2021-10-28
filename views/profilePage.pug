@@ -1,0 +1,15 @@
+extends layouts/main-layout.pug
+
+block content
+    if !profileUser
+        span.errorMessage Chequea que la URL es correcta!
+    else 
+        .profileHeaderContainer 
+            .coverPhotoContainer 
+                .imagenUsuarioContainer 
+                    img(src=profileUser.foto, alt="Imagen perfil")
+        .postContainer
+        +createPostModals(userLoggedIn)
+
+block scripts 
+    script(src="/scripts/profile.js") 

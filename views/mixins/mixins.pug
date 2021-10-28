@@ -27,3 +27,21 @@ mixin responderModal(userLoggedIn)
                 .modal-footer
                     button.btn.btn-secondary(type='button', data-dismiss='modal') Cancelar
                     button#responderButton.btn.btn-primary(type='button', disabled="") Responder
+
+mixin borrarModal()
+    #borrarModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='borrarModalLabel', aria-hidden='true')
+        .modal-dialog.modal-dialog-centered(role='document')
+            .modal-content
+                .modal-header
+                    h5#borrarTitle.modal-title Borrar Dwit
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    p#borrarTexto.text-center ¿Estás seguro de que quieres borrar este Dwit?
+                .modal-footer
+                    button.btn.btn-secondary(type='button', data-dismiss='modal') Cancelar
+                    button#borrarButton.btn.btn-primary(type='button') Borrar
+
+mixin createPostModals(userLoggedIn)
+    +responderModal(userLoggedIn)
+    +borrarModal()

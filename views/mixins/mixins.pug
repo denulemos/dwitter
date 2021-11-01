@@ -45,3 +45,13 @@ mixin borrarModal()
 mixin createPostModals(userLoggedIn)
     +responderModal(userLoggedIn)
     +borrarModal()
+
+mixin createFollowButton(user, isFollowing)
+    - text = isFollowing ? "Siguiendo" : "Seguir"
+    - buttonClass = isFollowing ? "followButton following" : "followButton"
+    button(class= buttonClass, data-user=user._id) #{text}
+
+mixin createTab(name, href, isSelected)
+    - className = isSelected ? "tab active" : "tab"
+    a(href=href, class= className)
+        span #{name}

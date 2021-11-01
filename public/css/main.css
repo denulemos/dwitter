@@ -259,6 +259,81 @@ display: flex;
 
 }
 
+.profileHeaderContainer .profileButtonsContainer  {
+    text-align: right;
+    padding: var(--spacing);
+    min-height: 66px;
+}
+
+.profileUserButton,
+.followButton {
+    border: 1px solid var(--greenish-blue);
+    color: var(--greenish-blue);
+    font-weight: bold;
+    padding: 5px 15px;
+    border-radius: 60px;
+    display: inline-block;
+    margin-left: var(--spacing);
+}
+
+.profileUserButton:hover,
+.followButton:hover {
+     background-color: rgba(212,212,212,0.5);
+     color: var(--greenish-blue);
+}
+
+.followButton.following {
+    background-color: var(--greenish-blue);
+    color: #fff;
+}
+
+.profileHeaderContainer .userDetailsContainer {
+    padding: 0 var(--spacing);
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.followersContainer .value {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.followersContainer span:not(.value) {
+    color: var(--grey);
+}
+
+.followersContainer a{
+    margin-right: 15px;
+}
+
+.tabsContainer {
+    display: flex;
+    margin-top: var(--spacing);
+    border-bottom: 1px solid var(--greenish-blue);
+    flex-shrink: 0;
+}
+
+.tab {
+    flex: 1;
+    height: 52px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--greenish-blue);
+    font-weight: bold;
+}
+
+.tab.active {
+    color: var(--greenish-blue);
+    border-bottom: 2px solid var(--greenish-blue);
+}
+
+.tab:hover {
+    color: var(--grey);
+    background-color: rgba(212,212,212,0.5);
+    text-decoration: none;
+}
 
 
 

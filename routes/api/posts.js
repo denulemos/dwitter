@@ -13,7 +13,16 @@ app.use(
 
 // Obtener posts
 router.get("/", async (req, res, next) => {
-    const results = await getPosts({});
+
+    const searchObj = req.query;
+
+    if (searchObj.isReply !== undefined) {
+      const isReply = searchObj.isReply == "true";
+      searchObj.respondeA = {$exists: isReply};
+      delete searchObj.isReply;
+    }
+
+    const results = await getPosts(searchObj);
     res.status(200).send(results);
 });
 
@@ -46,8 +55,6 @@ router.post("/", async (req, res, next) => {
     contenido: req.body.data.contenido,
     autor: req.session.user,
   };
-
-  console.log(req.body);
 
   if (req.body.data.respondeA){
     data.respondeA = req.body.data.respondeA;

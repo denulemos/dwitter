@@ -4,10 +4,35 @@ block content
     if !profileUser
         span.errorMessage Chequea que la URL es correcta!
     else 
+        script. 
+            const userProfileId = '!{profileUser._id}'; 
+            const selectedTab = '!{selectedTab}'; 
+
         .profileHeaderContainer 
             .coverPhotoContainer 
                 .imagenUsuarioContainer 
                     img(src=profileUser.foto, alt="Imagen perfil")
+            .profileButtonsContainer 
+                if profileUser._id !== userLoggedIn._id
+                    a.profileUserButton(href="/messages/" + profileUser._id)
+                        i.fas.fa-envelope
+                    +createFollowButton(profileUser, true)
+            .userDetailsContainer
+                span.displayName #{profileUser.displayName}
+                span.usuario @#{profileUser.usuario}
+                span.description #{profileUser.descripcion}
+
+                .followersContainer 
+                    a(href=`/profile/${profileUser.username}/following`)
+                        span.value #{0}
+                        span Siguiendo
+                    a(href=`/profile/${profileUser.username}/followers`)
+                        span.value #{0}
+                        span Seguidores
+        .tabsContainer 
+            +createTab("Dwits", `/profile/${profileUser.usuario}`, selectedTab !== "replies" )
+            +createTab("Respuestas", `/profile/${profileUser.usuario}/replies`, selectedTab == "replies")
+
         .postContainer
         +createPostModals(userLoggedIn)
 

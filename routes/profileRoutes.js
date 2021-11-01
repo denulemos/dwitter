@@ -22,6 +22,14 @@ router.get("/:usuario", async (req, res, next) => {
     res.status(200).render("profilePage", payload);
 })
 
+router.get("/:usuario/replies", async (req, res, next) => {
+
+    var payload =  await getPayload(req.params.usuario, req.session.user);
+    payload.selectedTab = "replies";
+    
+    res.status(200).render("profilePage", payload);
+})
+
 const getPayload = async (usuario, userLoggedIn) => {
     var user = await User.findOne({usuario: usuario});
 

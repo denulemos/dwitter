@@ -13,10 +13,9 @@ app.use(
 
 // Obtener posts
 router.get("/", async (req, res, next) => {
-
     const searchObj = req.query;
 
-    if (searchObj.isReply !== undefined) {
+    if (searchObj.isReply) {
       const isReply = searchObj.isReply == "true";
       searchObj.respondeA = {$exists: isReply};
       delete searchObj.isReply;

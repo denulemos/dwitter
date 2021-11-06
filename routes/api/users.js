@@ -88,4 +88,26 @@ router.post("/profilePicture", upload.single("croppedImage"), async (req, res, n
   });
 });
 
+router.post("/coverPhoto", upload.single("croppedImage"), async (req, res, next) => {
+  if(!req.file){
+    console.log('No hay file en la req');
+    return res.sendStatus(400);
+  }
+
+  const filePath = `/uploads/images/${req.file.filename}.png`;
+  const tempPath = req.file.path;
+  const targetPath = path.join(__dirname, `../../${filePath}`); // Path completo al archivo
+
+  //Movemos al archivo
+  fs.rename(tempPath, targetPath, async error => {
+    if (error){
+      console.log(error);
+      return res.sendStatus(400);
+    }
+
+    req.session.user = await User.findByIdAndUpdate(req.session.user._id, {fotoPortada: filePath}, {new: true});
+    res.sendStatus(204);
+  });
+});
+
 module.exports = router;

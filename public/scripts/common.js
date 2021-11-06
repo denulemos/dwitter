@@ -78,6 +78,12 @@ $("#borrarModal").on("show.bs.modal", (event) => {
   $("#borrarButton").data("id", id);
 });
 
+$("#confirmPinModal").on("show.bs.modal", (event) => {
+  const boton = $(event.relatedTarget);
+  const id = getElementId(boton);
+  $("#pinPostButton").data("id", id);
+});
+
 $("#borrarButton").click((event) => {
   const id = $(event.target).data("id");
 
@@ -85,6 +91,19 @@ $("#borrarButton").click((event) => {
     .delete("/api/posts/" + id)
     .then(() => {
       // Cuando el post se elimina la pagina se recarga
+      location.reload();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
+
+$("#pinPostButton").click((event) => {
+  const id = $(event.target).data("id");
+
+  axios
+    .put("/api/posts/" + id)
+    .then(() => {
       location.reload();
     })
     .catch((error) => {
@@ -115,6 +134,30 @@ $("#filePhoto").change((event) => {
   }
 });
 
+// Subir imagen de portada
+$("#coverPhoto").change((event) => {
+  
+  if(event.target.files && event.target.files[0]){
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const image = document.getElementById("coverPreview");
+      image.src = e.target.result;
+      
+      // Singleton 
+      if (cropper) {
+        cropper.destroy();
+      }
+
+      cropper = new Cropper(image, {
+        aspectRatio: 16 / 9,
+        background: false
+      });
+    }
+    reader.readAsDataURL(event.target.files[0]);
+  }
+});
+
+
 $("#imageUploadButton").click(() => {
   const canvas = cropper.getCroppedCanvas();
   if (!canvas){
@@ -137,6 +180,30 @@ $("#imageUploadButton").click(() => {
 
   })
 });
+
+$("#coverPhotoUploadButton").click(() => {
+  const canvas = cropper.getCroppedCanvas();
+  if (!canvas){
+    alert("Ocurrio un error. ¿Subiste el archivo correcto?");
+    return;
+  }
+
+  canvas.toBlob((blob) => {
+    const formData = new FormData();
+    formData.append("croppedImage", blob);  
+
+    $.ajax({
+      url:'/api/users/coverPhoto',
+      type:"POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: () => location.reload()
+    })
+
+  })
+});
+
 
 $(document).on("click", ".followButton", (event) => {
   const button = $(event.target);
@@ -269,7 +336,8 @@ const createPostHtml = (data, largeFont = false) => {
   //Mostrar boton para borrar Dwit
   var buttons = "";
   if (data.autor._id === userLoggedIn._id) {
-    buttons = `<button data-id="${data._id}" data-toggle="modal" data-target="#borrarModal"><i class='fas fa-times'></i></button>`;
+    buttons = `<button data-id="${data._id}" data-toggle="modal" data-target="#confirmPinModal"><i class='fas fa-thumbtack'></i></button>
+    <button data-id="${data._id}" data-toggle="modal" data-target="#borrarModal"><i class='fas fa-times'></i></button>`;
   }
 
   return `<div class="post ${largeFontClass}" data-id='${data._id}'>

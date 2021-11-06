@@ -58,9 +58,41 @@ mixin createImageUploadModal()
                     button.btn.btn-secondary(type='button', data-dismiss='modal') Cancelar
                     button#imageUploadButton.btn.btn-primary(type='button') Guardar
 
+mixin createCoverPhotoUploadModal()
+    #coverPhotoUploadModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='imageUploadModalLabel', aria-hidden='true')
+        .modal-dialog.modal-dialog-centered(role='document')
+            .modal-content
+                .modal-header
+                    h5#coverPhotoUploadModalLabel.modal-title Cargar nueva foto de portada
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    input#coverPhoto(type="file", name="filePhoto")
+                    .imagePreviewContainer 
+                        img#coverPreview
+                .modal-footer
+                    button.btn.btn-secondary(type='button', data-dismiss='modal') Cancelar
+                    button#coverPhotoUploadButton.btn.btn-primary(type='button') Guardar
+
+mixin createPinnedPostModal()
+    #confirmPinModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='confirmPinModalLabel', aria-hidden='true')
+        .modal-dialog.modal-dialog-centered(role='document')
+            .modal-content
+                .modal-header
+                    h5#confirmPinModalLabel.modal-title Pin este Dwit
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    p Este Dwit será mostrado arriba de todo en tu perfil. Solo podrás pinnear uno a la vez
+                .modal-footer
+                    button.btn.btn-secondary(type='button', data-dismiss='modal') Cancelar
+                    button#pinPostButton.btn.btn-primary(type='button') Pinnear
+
+
 mixin createPostModals(userLoggedIn)
     +responderModal(userLoggedIn)
     +borrarModal()
+    +createPinnedPostModal()
 
 mixin createFollowButton(user, isFollowing)
     - text = isFollowing ? "Siguiendo" : "Seguir"

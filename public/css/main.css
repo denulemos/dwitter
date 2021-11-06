@@ -243,7 +243,7 @@ display: flex;
     
 }
 
-.profileHeaderContainer .coverPhotoContainer {
+.profileHeaderContainer .coverPhotoSection {
     height: 180px;
     background-color: var(--greenish-blue);
     position: relative;
@@ -363,18 +363,33 @@ display: flex;
     padding: 0 var(--spacing);
 }
 
-.profilePictureButton {
+.profilePictureButton, .coverPhotoButton {
     position: absolute;
     font-size: 50px;
     color: rgba(0,0,0,0.6);
     display: none;
 }
 
-.imagenUsuarioContainer:hover .profilePictureButton {
+.imagenUsuarioContainer:hover .profilePictureButton, 
+.coverPhotoSection:hover .coverPhotoButton {
     display: block;
 }
 
-#imagePreview {
+.coverPhotoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.coverPhotoContainer img {
+    width: 100%;
+    object-fit: cover;
+    height: 100%;
+
+}
+
+#imagePreview, #coverPreview {
     display: block;
     max-width: 100%;
 }

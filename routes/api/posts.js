@@ -184,6 +184,17 @@ router.delete("/:id", async (req,res,next) => {
   })
 });
 
+router.put("/:id", async (req,res,next) => {
+  Post.findByIdAndDelete(req.params.id)
+  .then(() => {
+    res.sendStatus(200)
+  })
+  .catch((e) => {
+    console.log(e);
+    res.sendStatus(400);
+  })
+});
+
   const getPosts = async (filter) => {
     var results = await Post.find(filter)
     .populate("autor") // Obtener el objeto entero del autor

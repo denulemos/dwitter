@@ -1,5 +1,4 @@
 $(document).ready(()=> {
-
     if (selectedTab === "replies"){
         loadPostsReply();
     }
@@ -12,6 +11,7 @@ $(document).ready(()=> {
 const loadPosts = () => {
     axios.get('/api/posts', {autor: userProfileId, isReply: false})
     .then((response) => {
+      console.log(response);
       outputPosts(response.data, $(".postContainer"));
     
     })

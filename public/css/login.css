@@ -1,5 +1,13 @@
+:root {
+    --greenish-blue: #16A085;
+    --greenish-blue-light: #5aaa9a;
+    --grey: #95A5A6;
+    --hover-grey: #7F8C8D;
+    --spacing: 15px;
+}
+
 body {
-    background-color: #0099ff;
+    background-color: var(--greenish-blue-light)!important;
 }
 
 .wrapper {

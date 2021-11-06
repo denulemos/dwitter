@@ -1,0 +1,20 @@
+extends layouts/main-layout.pug
+
+block content
+    if !profileUser
+        span.errorMessage Chequea que la URL es correcta!
+    else 
+        script. 
+            const userProfileId = '!{profileUser._id}'; 
+            const selectedTab = '!{selectedTab}'; 
+        - followersCount = profileUser.seguidores.length 
+        - followingCount = profileUser.siguiendo.length
+
+        .tabsContainer 
+            +createTab("Siguiendo", `/profile/${profileUser.usuario}/siguiendo`, selectedTab !== "seguidores" )
+            +createTab("Seguidores", `/profile/${profileUser.usuario}/seguidores`, selectedTab == "seguidores")
+
+        .resultsContainer
+
+block scripts 
+    script(src="/scripts/followersAndFollowing.js") 

@@ -42,6 +42,22 @@ mixin borrarModal()
                     button.btn.btn-secondary(type='button', data-dismiss='modal') Cancelar
                     button#borrarButton.btn.btn-primary(type='button') Borrar
 
+mixin createImageUploadModal()
+    #imageUploadModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='imageUploadModalLabel', aria-hidden='true')
+        .modal-dialog.modal-dialog-centered(role='document')
+            .modal-content
+                .modal-header
+                    h5#imageUploadModalLabel.modal-title Cargar nueva foto de perfil
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    input#filePhoto(type="file", name="filePhoto")
+                    .imagePreviewContainer 
+                        img#imagePreview
+                .modal-footer
+                    button.btn.btn-secondary(type='button', data-dismiss='modal') Cancelar
+                    button#imageUploadButton.btn.btn-primary(type='button') Guardar
+
 mixin createPostModals(userLoggedIn)
     +responderModal(userLoggedIn)
     +borrarModal()

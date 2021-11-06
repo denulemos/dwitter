@@ -11,8 +11,8 @@ const UserSchema = new Schema({
     fotoPortada: { type: String },
     likes: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
     redweets: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
-    // siguiendo: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-    // seguidores: [{ type: Schema.Types.ObjectId, ref: 'User' }]
+    siguiendo: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    seguidores: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 }, { timestamps: true });
 
 var User = mongoose.model('User', UserSchema);

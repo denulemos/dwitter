@@ -7,27 +7,38 @@ block content
         script. 
             const userProfileId = '!{profileUser._id}'; 
             const selectedTab = '!{selectedTab}'; 
+        - followersCount = profileUser.seguidores.length 
+        - followingCount = profileUser.siguiendo.length
 
         .profileHeaderContainer 
             .coverPhotoContainer 
                 .imagenUsuarioContainer 
                     img(src=profileUser.foto, alt="Imagen perfil")
+                    if profileUser._id == userLoggedIn._id  
+                        button.profilePictureButton(data-toggle="modal", data-target="#imageUploadModal")
+                            i.fas.fa-camera
             .profileButtonsContainer 
                 if profileUser._id !== userLoggedIn._id
                     a.profileUserButton(href="/messages/" + profileUser._id)
                         i.fas.fa-envelope
-                    +createFollowButton(profileUser, true)
+                    - const profileUserId = profileUser._id.toString();
+                    - if (userLoggedIn.siguiendo && userLoggedIn.siguiendo.includes(profileUserId))
+                        +createFollowButton(profileUser, true)
+                    - else
+                        +createFollowButton(profileUser, false)
+
+                    
             .userDetailsContainer
                 span.displayName #{profileUser.displayName}
                 span.usuario @#{profileUser.usuario}
                 span.description #{profileUser.descripcion}
 
                 .followersContainer 
-                    a(href=`/profile/${profileUser.username}/following`)
-                        span.value #{0}
+                    a(href=`/profile/${profileUser.usuario}/siguiendo`)
+                        span.value #{followingCount}
                         span Siguiendo
-                    a(href=`/profile/${profileUser.username}/followers`)
-                        span.value #{0}
+                    a(href=`/profile/${profileUser.usuario}/seguidores`)
+                        span#followersValue.value #{followersCount}
                         span Seguidores
         .tabsContainer 
             +createTab("Dwits", `/profile/${profileUser.usuario}`, selectedTab !== "replies" )
@@ -35,6 +46,8 @@ block content
 
         .postContainer
         +createPostModals(userLoggedIn)
+        +createImageUploadModal()
+
 
 block scripts 
     script(src="/scripts/profile.js") 

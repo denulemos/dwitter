@@ -41,6 +41,10 @@ button {
     color:  var(--greenish-blue);
 }
 
+.wrapper > .row {
+    margin: 0;
+}
+
 button i,
 button span {
     pointer-events: none;
@@ -243,6 +247,7 @@ display: flex;
     height: 180px;
     background-color: var(--greenish-blue);
     position: relative;
+
 }
 
 .profileHeaderContainer .imagenUsuarioContainer {
@@ -251,6 +256,9 @@ display: flex;
     margin-left: var(--spacing);
     position: absolute;
     bottom: -66px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
 }
 
@@ -335,5 +343,38 @@ display: flex;
     text-decoration: none;
 }
 
+.noResults {
+    padding: var(--spacing);
+}
 
+.resultsContainer {
+    display: flex;
+    flex-direction: column;
+}
 
+.resultsContainer .user {
+    padding: var(--spacing);
+    display: flex;
+    border-bottom: 1px solid var(--grey);
+}
+
+.user .userDetailsContainer {
+    flex: 1;
+    padding: 0 var(--spacing);
+}
+
+.profilePictureButton {
+    position: absolute;
+    font-size: 50px;
+    color: rgba(0,0,0,0.6);
+    display: none;
+}
+
+.imagenUsuarioContainer:hover .profilePictureButton {
+    display: block;
+}
+
+#imagePreview {
+    display: block;
+    max-width: 100%;
+}

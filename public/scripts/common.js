@@ -1,3 +1,6 @@
+// Globals
+let cropper;
+
 $("#postTextArea, #respuestaTextArea").keyup((event) => {
   const textbox = $(event.target);
   const value = $(event.target).val().trim();
@@ -87,6 +90,83 @@ $("#borrarButton").click((event) => {
     .catch((error) => {
       console.log(error);
     });
+});
+
+// Subir imagen de perfil
+$("#filePhoto").change((event) => {
+  
+  if(event.target.files && event.target.files[0]){
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const image = document.getElementById("imagePreview");
+      image.src = e.target.result;
+      
+      // Singleton 
+      if (cropper) {
+        cropper.destroy();
+      }
+
+      cropper = new Cropper(image, {
+        aspectRatio: 1 / 1,
+        background: false
+      });
+    }
+    reader.readAsDataURL(event.target.files[0]);
+  }
+});
+
+$("#imageUploadButton").click(() => {
+  const canvas = cropper.getCroppedCanvas();
+  if (!canvas){
+    alert("Ocurrio un error. ¿Subiste el archivo correcto?");
+    return;
+  }
+
+  canvas.toBlob((blob) => {
+    const formData = new FormData();
+    formData.append("croppedImage", blob);  
+
+    $.ajax({
+      url:'/api/users/profilePicture',
+      type:"POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: () => location.reload()
+    })
+
+  })
+});
+
+$(document).on("click", ".followButton", (event) => {
+  const button = $(event.target);
+  const userId = button.data().user;
+
+  axios
+  .put(`/api/users/${userId}/follow`)
+  .then((data) => {
+    var difference = 1;
+    if (data.data.siguiendo.includes(userId)){
+      button.addClass("following");
+      button.text("Siguiendo");
+    }
+    else {
+      button.removeClass("following");
+      button.text("Seguir");
+      difference= -1;
+    }
+
+    const followersLabel = $("#followersValue");
+    if (followersLabel.length !== 0){
+      let followersText = followersLabel.text();
+      followersText = parseInt(followersText);
+      followersLabel.text(followersText + difference);
+    }
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+
 });
 
 // Se maneja distinto el click, ya que el likeButton es un elemento dinamico, se maneja a nivel document

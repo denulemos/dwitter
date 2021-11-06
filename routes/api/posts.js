@@ -22,6 +22,28 @@ router.get("/", async (req, res, next) => {
       delete searchObj.isReply;
     }
 
+    if(searchObj.followingOnly){
+      const followingOnly = searchObj.followingOnly == "true";
+
+      if (followingOnly){
+        const objectIds = [];
+
+        if (!req.session.user.siguiendo){
+          req.session.user.siguiendo = [];
+        }
+
+        req.session.user.siguiendo.forEach(user => {
+          objectIds.push(user);
+        });
+
+        objectIds.push(req.session.user._id);
+  
+        searchObj.autor = {$in: objectIds};
+      }
+    
+      delete searchObj.followingOnly;
+    }
+
     const results = await getPosts(searchObj);
     res.status(200).send(results);
 });
@@ -35,7 +57,7 @@ router.get("/:id", async (req, res, next) => {
     postData: postData
   }
 
-  if (postData.respondeA !== undefined) {
+  if (postData.respondeA) {
     results.respondeA = postData.respondeA;
   }
 

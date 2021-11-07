@@ -102,7 +102,7 @@ $("#pinPostButton").click((event) => {
   const id = $(event.target).data("id");
 
   axios
-    .put("/api/posts/" + id)
+    .put("/api/posts/" + id, {pinned: true})
     .then(() => {
       location.reload();
     })
@@ -334,9 +334,17 @@ const createPostHtml = (data, largeFont = false) => {
   }
 
   //Mostrar boton para borrar Dwit
-  var buttons = "";
+  let buttons = "";
+  let pinnedPostText = "";
   if (data.autor._id === userLoggedIn._id) {
-    buttons = `<button data-id="${data._id}" data-toggle="modal" data-target="#confirmPinModal"><i class='fas fa-thumbtack'></i></button>
+    let pinnedClass = "";
+
+    if(data.pinned){
+      pinnedClass = "active";
+      pinnedPostText = "<i class='fas fa-thumbtack'></i> <span>Dwit Pinned</span>";
+    }
+
+    buttons = `<button class='pinButton ${pinnedClass}' data-id="${data._id}" data-toggle="modal" data-target="#confirmPinModal"><i class='fas fa-thumbtack'></i></button>
     <button data-id="${data._id}" data-toggle="modal" data-target="#borrarModal"><i class='fas fa-times'></i></button>`;
   }
 
@@ -349,6 +357,7 @@ const createPostHtml = (data, largeFont = false) => {
   <img src='${autor.foto}'>
   </div>
   <div class="postContentContainer">
+  <div class="pinnedPostText">${pinnedPostText} </div>
   <div class="header">
     <a class="displayName" href='/profile/${autor.usuario}'>${
     autor.displayName

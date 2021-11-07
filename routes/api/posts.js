@@ -185,9 +185,17 @@ router.delete("/:id", async (req,res,next) => {
 });
 
 router.put("/:id", async (req,res,next) => {
-  Post.findByIdAndDelete(req.params.id)
+
+  if (req.body.pinned){
+    await Post.updateMany({autor: req.session.user}, {pinned: false})
+    .catch((e) => {
+      console.log(e);
+      res.sendStatus(400);
+    })
+  }
+  Post.findByIdAndUpdate(req.params.id, req.body)
   .then(() => {
-    res.sendStatus(200)
+    res.sendStatus(204)
   })
   .catch((e) => {
     console.log(e);

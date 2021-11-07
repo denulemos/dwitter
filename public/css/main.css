@@ -322,6 +322,10 @@ display: flex;
     flex-shrink: 0;
 }
 
+.pinButton.active {
+    color: red;
+}
+
 .tab {
     flex: 1;
     height: 52px;
@@ -392,4 +396,9 @@ display: flex;
 #imagePreview, #coverPreview {
     display: block;
     max-width: 100%;
+}
+
+.pinnedPostText {
+    font-size: 12px;
+    color: var(--grey)
 }

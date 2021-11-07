@@ -9,24 +9,14 @@ $(document).ready(()=> {
 });
 
 const loadPosts = () => {
-    axios.get('/api/posts', {autor: userProfileId, isReply: false})
-    .then((response) => {
+    $.get('/api/posts', {autor: userProfileId, isReply: false} ,response => {
       console.log(response);
-      outputPosts(response.data, $(".postContainer"));
-    
+      outputPosts(response, $(".postContainer"));
     })
-    .catch((error) => {
-      console.log(error);
-    });
-}
+};
 
 const loadPostsReply = () => {
-    axios.get('/api/posts', {autor: userProfileId, isReply: true})
-    .then((response) => {
-      outputPosts(response.data, $(".postContainer"));
-    
+    $.get('/api/posts', {autor: userProfileId, isReply: true}, response => {
+outputPosts(response, $(".postContainer"));
     })
-    .catch((error) => {
-      console.log(error);
-    });
-}
+};

@@ -84,6 +84,12 @@ $("#confirmPinModal").on("show.bs.modal", (event) => {
   $("#pinPostButton").data("id", id);
 });
 
+$("#unpinModal").on("show.bs.modal", (event) => {
+  const boton = $(event.relatedTarget);
+  const id = getElementId(boton);
+  $("#unpinPostButton").data("id", id);
+});
+
 $("#borrarButton").click((event) => {
   const id = $(event.target).data("id");
 
@@ -103,6 +109,19 @@ $("#pinPostButton").click((event) => {
 
   axios
     .put("/api/posts/" + id, {pinned: true})
+    .then(() => {
+      location.reload();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
+
+$("#unpinPostButton").click((event) => {
+  const id = $(event.target).data("id");
+
+  axios
+    .put("/api/posts/" + id, {pinned: false})
     .then(() => {
       location.reload();
     })
@@ -335,16 +354,18 @@ const createPostHtml = (data, largeFont = false) => {
 
   //Mostrar boton para borrar Dwit
   let buttons = "";
+  let dataTarget = "#confirmPinModal"
   let pinnedPostText = "";
   if (data.autor._id === userLoggedIn._id) {
     let pinnedClass = "";
 
     if(data.pinned){
       pinnedClass = "active";
+      dataTarget = "#unpinModal";
       pinnedPostText = "<i class='fas fa-thumbtack'></i> <span>Dwit Pinned</span>";
     }
 
-    buttons = `<button class='pinButton ${pinnedClass}' data-id="${data._id}" data-toggle="modal" data-target="#confirmPinModal"><i class='fas fa-thumbtack'></i></button>
+    buttons = `<button class='pinButton ${pinnedClass}' data-id="${data._id}" data-toggle="modal" data-target="${dataTarget}"><i class='fas fa-thumbtack'></i></button>
     <button data-id="${data._id}" data-toggle="modal" data-target="#borrarModal"><i class='fas fa-times'></i></button>`;
   }
 

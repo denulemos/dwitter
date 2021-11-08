@@ -29,6 +29,7 @@ const postPageRoute = require("./routes/postRoutes");
 const profilePageRoute = require("./routes/profileRoutes");
 const usersApiRoute = require("./routes/api/users");
 const uploadRoute = require("./routes/uploadRoutes");
+const searchRoute = require("./routes/searchRoutes");
 
 app.use("/logout", logoutRoute);
 app.use("/login", loginRoute);
@@ -38,6 +39,7 @@ app.use("/post",middleware.requireLogin, postPageRoute);
 app.use("/profile",middleware.requireLogin, profilePageRoute);
 app.use("/api/users", usersApiRoute);
 app.use("/uploads", uploadRoute);
+app.use("/search",middleware.requireLogin, searchRoute);
 
 // Seteo motor visual
 app.set("view engine", "pug");

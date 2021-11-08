@@ -88,11 +88,26 @@ mixin createPinnedPostModal()
                     button.btn.btn-secondary(type='button', data-dismiss='modal') Cancelar
                     button#pinPostButton.btn.btn-primary(type='button') Pinnear
 
+mixin createUnpinPostModal()
+    #unpinModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='unpinModalModalLabel', aria-hidden='true')
+        .modal-dialog.modal-dialog-centered(role='document')
+            .modal-content
+                .modal-header
+                    h5#unpinModalLabel.modal-title Eliminar Pin?
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    p Este Dwit dejará de ser mostrado arriba de todo en tu perfil.
+                .modal-footer
+                    button.btn.btn-secondary(type='button', data-dismiss='modal') Cancelar
+                    button#unpinPostButton.btn.btn-primary(type='button') Despinnear
+
 
 mixin createPostModals(userLoggedIn)
     +responderModal(userLoggedIn)
     +borrarModal()
     +createPinnedPostModal()
+    +createUnpinPostModal()
 
 mixin createFollowButton(user, isFollowing)
     - text = isFollowing ? "Siguiendo" : "Seguir"

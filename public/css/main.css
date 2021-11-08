@@ -402,3 +402,28 @@ display: flex;
     font-size: 12px;
     color: var(--grey)
 }
+
+.pinnedPostContainer {
+    border-bottom: 10px solid var(--grey);
+}
+
+.searchBarContainer {
+    position: relative;
+    color: var(--grey);
+    padding: 10px var(--spacing);
+}
+
+.searchBarContainer i {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.searchBarContainer #searchBox {
+    height: 36px;
+    width: 100%;
+    padding: 5px 15px 5px 40px;
+    border-radius: 50px;
+    border: none;
+    color: var(--grey);
+}

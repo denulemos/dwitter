@@ -5,9 +5,6 @@ const router = express.Router();
 // Root
 router.get("/:id", (req, res, next) => {
 
-
-    console.log(req.params)
-
     var payload = {
         pageTitle: "Detalle Dwit",
         userLoggedIn: req.session.user,

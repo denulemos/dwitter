@@ -49,7 +49,7 @@ block content
         .tabsContainer 
             +createTab("Dwits", `/profile/${profileUser.usuario}`, selectedTab !== "replies" )
             +createTab("Respuestas", `/profile/${profileUser.usuario}/replies`, selectedTab == "replies")
-
+        .pinnedPostContainer
         .postContainer
         +createPostModals(userLoggedIn)
         +createImageUploadModal()

@@ -1,0 +1,11 @@
+extends layouts/main-layout.pug
+
+block content
+    .chatPageContainer 
+        .chatTitleBar 
+            label(for="userSearchTextbox") Envio a: 
+            #selectedUsers 
+                input#userSearchTextbox(type="text", placeholder: "¿A qué usuario querés hablarle?")
+        .resultsContainer
+        button#createChatButton(disabled) Crear chat
+

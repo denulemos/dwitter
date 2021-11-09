@@ -427,3 +427,63 @@ display: flex;
     border: none;
     color: var(--grey);
 }
+
+.chatPageContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.chatTitleBar {
+    border-bottom: 1px solid var(--greenish-blue);
+    display: flex;
+    align-items: center;
+    min-width: 60px;
+    padding: 10px;
+}
+
+.chatTitleBar label {
+    margin: 0 10px 0 0;
+}
+
+#userSearchTextbox {
+    border: none;
+    flex: 1;
+    font-weight: 200;
+    min-width: 320px;
+}
+
+#userSearchTextbox:focus-visible {
+    border: none;
+    outline: none;
+}
+
+#createChatButton {
+    border: none;
+    background-color: var(--greenish-blue);
+    color: white;
+    padding: 7px 20px;
+    margin: 10px auto;
+    border-radius: 8px;
+}
+
+#createChatButton:hover {
+    cursor: pointer;
+}
+
+#createChatButton:disabled {
+    background-color: var(--grey);
+    cursor: auto;
+}
+
+.selectedUser {
+    font-weight: 300;
+    background-color: #5aaa9a;
+    color: white;
+    padding: 5px;
+    border-radius: 3px;
+    margin: 5px 5px 0 0;
+    display: inline-block;
+
+}

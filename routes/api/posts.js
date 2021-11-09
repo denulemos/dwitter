@@ -21,6 +21,11 @@ router.get("/", async (req, res, next) => {
       delete searchObj.isReply;
     }
 
+    if (searchObj.search){
+      searchObj.contenido = { $regex: searchObj.search, $options: "i"} // i ignora el upper o lower case
+      delete searchObj.search;
+    }
+
     if(searchObj.followingOnly){
       const followingOnly = searchObj.followingOnly == "true";
 

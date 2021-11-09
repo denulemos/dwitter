@@ -13,6 +13,26 @@ app.use(
   })
 );
 
+router.get("/", async (req, res, next) => {
+  let searchObj = req.query;
+  if (req.query.search){
+    searchObj = {
+      $or: [
+        {displayName: { $regex: searchObj.search, $options: "i"}},
+        {usuario: { $regex: searchObj.search, $options: "i"}},
+      ]
+    }
+  }
+
+  User.find(searchObj)
+  .then(results => {
+    res.status(200).send(results);
+  })
+  .catch(e => {
+    console.log(e);
+  })
+});
+
 // Obtener posts
 router.put("/:userId/follow", async (req, res, next) => {
   const userId = req.params.userId;

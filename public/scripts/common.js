@@ -1,5 +1,7 @@
 // Globals
 let cropper;
+let timer;
+let selectedUsers = [];
 
 $("#postTextArea, #respuestaTextArea").keyup((event) => {
   const textbox = $(event.target);
@@ -67,6 +69,37 @@ $("#responderModal").on("show.bs.modal", (event) => {
       console.log(error);
     });
 });
+
+$("#userSearchTextbox").keydown((event) => {
+  clearTimeout(timer);
+  const textBox = $(event.target);
+  let value = textBox.val();
+
+  //keycode 8 => Tecla de borrar
+  if (!value && (event.which == 8 || event.keyCode == 8)){
+    selectedUsers.pop();
+    updateSelectedUsersHtml();
+    $(".resultsContainer").html("");
+
+    if (selectedUsers.length == 0) {
+      $("#createChatButton").prop("disabled", true);
+    }
+
+    return;
+  }
+
+  timer = setTimeout(() => {
+      value = textBox.val().trim();
+
+      if (!value){
+          $(".resultsContainer").html("");
+      }
+      else {
+          searchUsers(value);
+      }
+  },1000)
+
+})
 
 $("#responderModal").on("hidden.bs.modal", () =>
   $("#originalPostContainer").html("")
@@ -480,3 +513,92 @@ const outputPostsWithReplies = (resultados, container) => {
     container.append("<span class='vacio'>No hay Dwits encontrados</span>");
   }
 };
+
+const outputUsers = (results, container) => {
+  container.html("");
+  results.forEach(result => {
+      const html = createUserHtml(result, true);
+      container.append(html);
+
+      if (!results.length){
+          container.append("<span class='noResults'>No se encontraron resultados</span>")
+      }
+  });
+
+}
+
+const createUserHtml = (userData, showFollowButton) => {
+  const name = userData.displayName;
+  const isFollowing= userLoggedIn.siguiendo && userLoggedIn.siguiendo.includes(userData._id);
+  const text = isFollowing ? "Siguiendo" : "Seguir";
+  const buttonClass = isFollowing ? "followButton following" : "followButton";
+  let followButton = "";
+
+  // Mostrar o no el boton "seguir" en nosotros mismos
+  if (showFollowButton && userLoggedIn._id != userData._id){
+      followButton = `<div class="followButtonContainer">
+      <button class='${buttonClass}' data-user='${userData._id}'>${text}</button>
+      
+      </div>`;
+  }
+
+  return `<div class='user'>
+  <div class='imagenUsuarioContainer'>
+  <img src='${userData.foto}'>
+  </div>
+  <div class='userDetailsContainer'>
+  <div class='header'>
+      <a href='/profile/${userData.usuario}'>${name}</a>
+      <span class='usuario'>@${userData.usuario}</span>
+  </div>
+  </div>
+  ${followButton}
+  </div>`;
+}
+
+const searchUsers = (searchTerm) => {
+  $.get("/api/users", {search: searchTerm}, results => {
+    outputSelectableUsers(results, $(".resultsContainer"));
+  })
+}
+
+const outputSelectableUsers = (results, container) => {
+  container.html("");
+  results.forEach(result => {
+    // No queremos mostrarnos a nosotros mismos como resultado o ya esta seleccionado
+    if (result._id == userLoggedIn._id || selectedUsers.some(u => u._id == result._id)){
+      return;
+    }
+    const html = createUserHtml(result, false);
+    const element = $(html);
+    element.click(() => userSelected(result));
+    container.append(element);
+
+      if (!results.length){
+          container.append("<span class='noResults'>No se encontraron resultados</span>")
+      }
+  });
+
+}
+
+const userSelected = (user) => {
+  selectedUsers.push(user);
+  updateSelectedUsersHtml();
+  // Limpiamos el input
+  $("#userSearchTextbox").val("").focus();
+  // Limpiamos los resultados
+  $(".resultsContainer").html("");
+  $("#createChatButton").prop("disabled", false);
+}
+
+const updateSelectedUsersHtml = () => {
+  let elements = [];
+  selectedUsers.forEach(user => {
+    const usuario = user.usuario;
+    const userElement = $(`<span class="selectedUser">${usuario}</span>`);
+    elements.push(userElement);
+  })
+
+  $(".selectedUser").remove();
+  $("#selectedUsers").prepend(elements);
+}

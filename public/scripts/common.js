@@ -256,6 +256,14 @@ $("#coverPhotoUploadButton").click(() => {
   })
 });
 
+$("#createChatButton").click(() => {
+  const data = JSON.stringify(selectedUsers);
+  $.post("/api/chats", {usuarios: data}, chat => {
+    if (!chat || !chat._id) return alert("Hubo un error creando el chat");
+    window.location.href = `/messages/${chat._id}`;
+  })
+});
+
 
 $(document).on("click", ".followButton", (event) => {
   const button = $(event.target);

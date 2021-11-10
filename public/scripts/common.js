@@ -3,6 +3,11 @@ let cropper;
 let timer;
 let selectedUsers = [];
 
+$(document).ready(()=> {
+  refreshMessagesBadge();
+  refreshNotificationsBadge();
+})
+
 $("#postTextArea, #respuestaTextArea").keyup((event) => {
   const textbox = $(event.target);
   const value = $(event.target).val().trim();
@@ -41,6 +46,7 @@ $("#enviarPostButton, #responderButton").click((event) => {
     .post("/api/posts", { data })
     .then((response) => {
       if (response.data.respondeA) {
+        emitNotification(data.respondeA.autor);
         location.reload();
       } else {
         const html = createPostHtml(response.data);
@@ -285,6 +291,7 @@ $(document).on("click", ".followButton", (event) => {
     if (data.data.siguiendo.includes(userId)){
       button.addClass("following");
       button.text("Siguiendo");
+      emitNotification(userId);
     }
     else {
       button.removeClass("following");
@@ -318,6 +325,7 @@ $(document).on("click", ".likeButton", (event) => {
       // Chequear si el usuario likeo el post
       if (data.data.likes.includes(userLoggedIn._id)) {
         boton.addClass("active");
+        emitNotification(data.data.autor);
       } else {
         boton.removeClass("active");
       }
@@ -339,6 +347,7 @@ $(document).on("click", ".redweetButton", (event) => {
       // Chequear si el usuario likeo el post
       if (data.data.redweetsUsers.includes(userLoggedIn._id)) {
         boton.addClass("active");
+        emitNotification(data.data.autor);
       } else {
         boton.removeClass("active");
       }
@@ -646,12 +655,14 @@ const getOtherChatUsers = (users) => {
 }
 
 const messageReceived = (newMessage) => {
-  if($(".chatContainer").length == 0){
-
+  if($(`[data-room="${newMessage.chat._id}]`).length == 0){
+    showMessagePopUp(newMessage);
   }
   else {
     addChatMessageHtml(newMessage);
   }
+
+  refreshMessagesBadge();
 }
 
 const markNotificationsAsOpened = (notificationId= null, callback= null) => {
@@ -664,4 +675,147 @@ const markNotificationsAsOpened = (notificationId= null, callback= null) => {
       callback();
     }
   })
+}
+
+const refreshMessagesBadge = () => {
+  $.get("/api/chats", {unreadOnly: true}, (data) => {
+    const numResults = data.length;
+    if (numResults > 0){
+      $("#messagesBadge").text(numResults).addClass('active');
+    }
+    else {
+      $("#messagesBadge").text("").removeClass('active');
+    }
+  })
+}
+
+const refreshNotificationsBadge = () => {
+  $.get("/api/notifications", {unreadOnly: true}, (data) => {
+    const numResults = data.length;
+    if (numResults > 0){
+      $("#notificationBadge").text(numResults).addClass('active');
+    }
+    else {
+      $("#notificationBadge").text("").removeClass('active');
+    }
+  })
+}
+
+const showNotificationPopup = (data) => {
+  let html = createNotificationHtml(data);
+  const element = $(html);
+  element.hide().prependTo("#notificationList").slideDown("fast");
+  setTimeout(() => html.fadeOut(400), 5000);
+
+}
+
+const showMessagePopUp = (newMessage) => {
+  if (!newMessage.chat.ultimoMensaje._id){
+    newMessage.chat.ultimoMensaje = newMessage;
+  }
+  let html = createChatHtml(newMessage.chat);
+  const element = $(html);
+  element.hide().prependTo("#notificationList").slideDown("fast");
+  setTimeout(() => html.fadeOut(400), 5000);
+
+}
+
+const createNotificationHtml = (notification) => {
+  let userFrom = notification.emisor;
+  const text = getNotificationText(notification);
+  const href = getNotificationUrl(notification);
+  const className = notification.visto ? "" : "active";
+
+  return `<a href='${href}' data-id='${notification._id}' class='resultListItem notification ${className}'>
+      <div class='resultsImageContainer'>
+       <img src='${userFrom.foto}'>
+     
+      </div>
+      <div class='resultsDetailsContainer ellipsis'>
+      <span class='ellipsis'>${text}</span>
+   </div>
+  </a>`
+}
+
+const getNotificationText = (notification) => {
+  userFrom = notification.emisor;
+  if (!userFrom.displayName){
+      return console.log('Usuario no tiene displayname');
+  }
+  let text;
+  if (notification.tipoNotificacion == "redweet"){
+      text = `${userFrom.displayName} redwitteo un post tuyo!`;
+  }
+  else if (notification.tipoNotificacion == "postLike"){
+      text = `${userFrom.displayName} likeo un post tuyo!`;
+  }
+  else if (notification.tipoNotificacion == "reply"){
+      text = `${userFrom.displayName} respondió a un post tuyo!`;
+  }
+  else if (notification.tipoNotificacion == "follow"){
+      text = `${userFrom.displayName} te esta siguiendo!`;
+  }
+
+  return `<span class='ellipsis'>${text}</span>`
+}
+
+const getNotificationUrl = (notification) => {
+  let url= "#";
+  if (notification.tipoNotificacion == "redweet" || 
+  notification.tipoNotificacion == "postLike" || 
+  notification.tipoNotificacion == "reply"){
+      url = `/post/${notification.entityId}`;
+  }
+  else if (notification.tipoNotificacion == "follow"){
+      url = `/profile/${notification.entityId}`;
+  }
+
+  return url;
+}
+
+const createChatHtml = (chatData) => {
+  const chatName = getChatName(chatData);
+  const image = getChatImageElements(chatData);
+  const latestMessage = getLatestMessage(chatData.ultimoMensaje);
+  const activeClass = chatData?.ultimoMensaje?.leidoPor.includes(userLoggedIn._id) ? "" : "active";
+
+  return `<a href='/messages/${chatData._id}' class='resultListItem ${activeClass}'>
+      ${image}
+      <div class="resultsDetailsContainer ellipsis">
+          <span class='heading ellipsis'>${chatName}</span>
+          <span class='subText ellipsis'>${latestMessage}</span>
+      </div>
+  </a>`;
+}
+
+const getLatestMessage = (latestMessage) => {
+  console.log(latestMessage);
+  if (latestMessage){
+      return `${latestMessage.contenido}`;
+  }
+
+  return "Nuevo Chat";
+}
+
+const getChatImageElements = (chatData) => {
+  const otherChatUsers = getOtherChatUsers(chatData.usuarios);
+  let groupChatClass = "";
+  let chatImage = getUserChatImageElement(otherChatUsers[0]);
+
+  // Toma las imagenes de los primeros dos usuarios en el chat
+  if (otherChatUsers.length > 1) {
+      groupChatClass = "groupChatImage";
+      chatImage +=getUserChatImageElement(otherChatUsers[1]);
+  }
+
+  return `<div class='resultsImageContainer ${groupChatClass}'>${chatImage}</div>`;
+
+}
+
+const getUserChatImageElement = (chatUser) => {
+  if (!chatUser || !chatUser.foto){
+      return alert("Hubo un error con los usuarios");
+  }
+
+  return `<img src='${chatUser.foto}' alt='Foto perfil'/>`
 }

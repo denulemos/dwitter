@@ -33,6 +33,7 @@ nav a {
     color: var(--grey);
     justify-content: center;
     align-items: center;
+    position: relative;
     
 
 }
@@ -782,4 +783,37 @@ display: flex;
 
 .resultListItem.notification * {
     pointer-events: none;
+}
+
+#notificationBadge, #messagesBadge {
+    background-color: var(--greenish-blue);
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: black;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+}
+
+#notificationBadge.active, #messagesBadge.active {
+    visibility: visible;
+}
+
+#notificationList {
+    position: fixed;
+    top: 5px;
+    right: 5px;
+    width: 350px;
+    background-color: white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3) ;
+}
+
+#notificationList .active {
+    background-color: white;
 }

@@ -10,10 +10,9 @@ Pararse en la raiz del proyecto `./Dwitter` y en terminal, correr `npm install` 
 ## Tecnologias
 * Se eligio NodeJS con Express para el backend por la rapidez de desarrollo que brinda. Tambien porque su integracion con Socket.IO es muy simple. ✔️
 * Se eligio Pug como frontend engine ya que esta basado en Javascript y brinda una sintaxis muy sencilla para HTML, acelerando asi el desarrollo de este proyecto para que nos podamos concentrar puramente en el funcionamiento del backend ✔️
-* Se eligio MongoDB como Base de Datos. Al ser una base de datos no relacional, se brindaran los Schemas como documentacion, ya que no hay relaciones entre las entidades como pude suceder en una base de datos relacional. ✔️
-* Las llamadas a las API se haran con Axios y los Scripts del lado del cliente con JQuery o Javascript Vanilla.
+* Se eligio MongoDB como Base de Datos. Al ser una base de datos no relacional, se brindaran los Schemas como documentacion. ✔️
+* Las llamadas a las API se haran con Axios y los Scripts del lado del cliente con JQuery o Javascript Vanilla. Algunas llamadas se harán usando AJAX. ✔️
 * El frontend se complementará con Bootstrap ✔️
-* Todavia no se definio a que plataforma será subido este proyecto.
 
 ## Endpoints (Todavia en definicion ⚠️)
 * `api/posts` => Enviar dwit 
@@ -94,19 +93,4 @@ Los mismos pueden variar a medida que se va desarrollando el proyecto
 }, { timestamps: true });
 ```
 
-
 ![UML](./assets/UML.jpg)
-
-
-# Funcionalidades (TODOs) 📖
-* El usuario podrá logearse, registrarse en la plataforma y Twittear. ✔️
-* La plataforma es responsive.
-* Implementar nvm para mantener la version de Node actualmente utilizada.
-* Los twits podrán ser retwitteados, likeados, respondidos y borrados (por el mismo autor). 
-* Tambien existirá la opcion de enviar mensajes privados, hacer salas de chat con varios usuarios, y hablar desde ahi (Hecho con la magia de `Socket.io`). Los chats traeran los mensajes viejos que el usuario no llegó a leer en el momento
-* El usuario podrá setear su perfil en el momento que lo desee, para, por ejemplo, cambiar la foto de perfil
-* Habrán notificaciones en Real-Time
-* Se mantendrá una sesion de usuario ✔️
-* El usuario podrá seguir a otros usuarios para ver sus Twits en el inicio. 
-* En este proyecto los Twits pasarán a ser llamados Dwits. ✔️
-* Implementar Login con Google, Facebook, etc.. con Firebase (Nice to Have)

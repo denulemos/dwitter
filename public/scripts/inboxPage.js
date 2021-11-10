@@ -21,10 +21,9 @@ const outputChatList = (chatList, container) => {
 }
 
 const createChatHtml = (chatData) => {
-    console.log(chatData);
     const chatName = getChatName(chatData);
-    const image = getChatImageElements(chatData); //TODO
-    const latestMessage = "Placeholder mesnsaje "; //TODO
+    const image = getChatImageElements(chatData);
+    const latestMessage = getLatestMessage(chatData.ultimoMensaje);
 
     return `<a href='/messages/${chatData._id}' class='resultListItem'>
         ${image}
@@ -35,26 +34,13 @@ const createChatHtml = (chatData) => {
     </a>`;
 }
 
-const getChatName = (chatData) => {
-    let chatName = chatData.nombreChat;
-
-    if (!chatName){
-        const otherChatUsers = getOtherChatUsers(chatData.usuarios);
-        return otherChatUsers.map(user => user.displayName).join(", ");
-    }
-    else {
-        return chatName;
+const getLatestMessage = (latestMessage) => {
+    console.log(latestMessage);
+    if (latestMessage){
+        return `${latestMessage.contenido}`;
     }
 
-    
-}
-
-const getOtherChatUsers = (users) => {
-    if (users.length === 1) return users;
-
-    return users.filter((usuario) => {
-        return usuario._id != userLoggedIn._id;
-    } )
+    return "Nuevo Chat";
 }
 
 const getChatImageElements = (chatData) => {

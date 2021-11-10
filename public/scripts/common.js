@@ -54,6 +54,15 @@ $("#enviarPostButton, #responderButton").click((event) => {
     });
 });
 
+$(document).on("click", ".notification.active", (e) => {
+  const container = $(e.target);
+  const notificationId = container.data().id;
+  const href = container.attr('href');
+  e.preventDefault();
+  const callback = () => window.location = href;
+  markNotificationsAsOpened(notificationId, callback);
+})
+
 // Evento nativo de bootstrap
 $("#responderModal").on("show.bs.modal", (event) => {
   const boton = $(event.relatedTarget);
@@ -358,6 +367,9 @@ const getElementId = (element) => {
 };
 
 const createPostHtml = (data, largeFont = false) => {
+  if (!data.autor) {
+    return;
+  }
   if (data.contenido === undefined) {
     data = data.data;
   }
@@ -397,7 +409,7 @@ const createPostHtml = (data, largeFont = false) => {
   let buttons = "";
   let dataTarget = "#confirmPinModal"
   let pinnedPostText = "";
-  if (data.autor._id === userLoggedIn._id) {
+  if (data?.autor?._id === userLoggedIn._id) {
     let pinnedClass = "";
 
     if(data.pinned){
@@ -609,4 +621,47 @@ const updateSelectedUsersHtml = () => {
 
   $(".selectedUser").remove();
   $("#selectedUsers").prepend(elements);
+}
+
+const getChatName = (chatData) => {
+  let chatName = chatData.nombreChat;
+
+  if (!chatName){
+      const otherChatUsers = getOtherChatUsers(chatData.usuarios);
+      return otherChatUsers.map(user => user.displayName).join(", ");
+  }
+  else {
+      return chatName;
+  }
+
+  
+}
+
+const getOtherChatUsers = (users) => {
+  if (users.length === 1) return users;
+
+  return users.filter((usuario) => {
+      return usuario._id != userLoggedIn._id;
+  } )
+}
+
+const messageReceived = (newMessage) => {
+  if($(".chatContainer").length == 0){
+
+  }
+  else {
+    addChatMessageHtml(newMessage);
+  }
+}
+
+const markNotificationsAsOpened = (notificationId= null, callback= null) => {
+  if (!callback) callback = () => location.reload();
+  let url = notificationId ? `api/notifications/${notificationId}/markAsOpened` : `api/notifications/markAsOpened`
+  $.ajax({
+    url: url,
+    type: "PUT",
+    success: () => {
+      callback();
+    }
+  })
 }

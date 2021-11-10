@@ -9,14 +9,19 @@ block content
         .chatPageContainer 
             .chatTitleBarContainer 
                 +createChatImage(chat, userLoggedIn)
-                span#chatName Chat Placeholder
+                span#chatName(data-toggle="modal", data-target="#chatNameModal") 
             .mainContentContainer 
-                .chatContainer 
-                    .chatMessages
+                .loadingSpinnerContainer 
+                    img(src="/images/loading.gif", alt="Cargando")
+                .chatContainer(style="visibility: hidden")
+                    ul.chatMessages
+                    .typingDots 
+                        img(src="/images/typing.gif", alt="")
                     .footer 
-                        textarea(name="messageInput", placeholder="Escribí un mensaje..") 
+                        textarea.inputTextbox(name="messageInput", placeholder="Escribí un mensaje..") 
                         button.sendMessageButton 
                             i.fas.fa-paper-plane
+        +createChatNameModal(chat)
 
 block scripts 
     script(src="/scripts/chatPage.js") 

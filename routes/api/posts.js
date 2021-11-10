@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const User = require("../../schemas/UserSchema");
 const Post = require("../../schemas/PostSchema");
-const { route } = require("express/lib/application");
+const Notification = require("../../schemas/NotificationSchema");
 const router = express.Router();
 
 app.use(
@@ -73,7 +73,6 @@ router.get("/:id", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
   // Esta la request vacia?
   if (!req.body.data.contenido) {
-    console.log(req.body.data.contenido);
     return res.sendStatus(400);
   }
 
@@ -92,6 +91,13 @@ router.post("/", async (req, res, next) => {
       post = await User.populate(post, {
         path: "autor",
       });
+      post = await User.populate(post, {
+        path: "respondeA",
+      });
+
+      if (post.respondeA){
+        await Notification.insertNotification(post.respondeA.autor, req.session.user._id, "reply", post._id);
+      }
 
       // 201 Created
       res.status(201).send(post);
@@ -134,6 +140,10 @@ router.put("/:id/like", async (req, res, next) => {
       res.sendStatus(400);
     });
 
+    if (!liked){
+      await Notification.insertNotification(post.autor, req.session.user._id, "postLike", post._id);
+    }
+
   res.status(200).send(post);
 });
 
@@ -174,6 +184,10 @@ router.post("/:id/redweet", async (req, res, next) => {
         console.log(e);
         res.sendStatus(400);
       });
+
+    if (!deletedPost){
+      await Notification.insertNotification(post.autor, req.session.user._id, "redweet", post._id);
+    }
 
     res.status(200).send(post);
   });

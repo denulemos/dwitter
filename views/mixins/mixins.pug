@@ -89,7 +89,7 @@ mixin createPinnedPostModal()
                     button#pinPostButton.btn.btn-primary(type='button') Pinnear
 
 mixin createUnpinPostModal()
-    #unpinModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='unpinModalModalLabel', aria-hidden='true')
+    #unpinModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='unpinModalLabel', aria-hidden='true')
         .modal-dialog.modal-dialog-centered(role='document')
             .modal-content
                 .modal-header
@@ -138,3 +138,17 @@ mixin createChatImage(chatData, userLoggedIn)
                 -break
             img(src=usuario.foto, alt="Foto de perfil", title=usuario.displayName)
             - i++
+
+mixin createChatNameModal(chat)
+    #chatNameModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='chatNameModalLabel', aria-hidden='true')
+        .modal-dialog.modal-dialog-centered(role='document')
+            .modal-content
+                .modal-header
+                    h5#chatNameModalLabel.modal-title Cambiar el nombre del chat
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    input#chatNameTextbox(type="text", placeholder="Ingresá un nombre para este chat", value: chat.nombreChat)
+                .modal-footer
+                    button.btn.btn-secondary(type='button', data-dismiss='modal') Cancelar
+                    button#chatNameButton.btn.btn-primary(type='button') Guardar

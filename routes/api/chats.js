@@ -5,6 +5,7 @@ const bodyParser = require("body-parser")
 const User = require('../../schemas/UserSchema');
 const Post = require('../../schemas/PostSchema');
 const Chat = require('../../schemas/ChatSchema');
+const Messages = require('../../schemas/MessageSchema');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -37,8 +38,31 @@ router.post("/", async (req, res, next) => {
 router.get("/", async (req, res, next) => {
     Chat.find({usuarios: { $elemMatch: {$eq: req.session.user._id}}})
     .populate("usuarios")
+    .populate("ultimoMensaje")
     .sort({updatedAt: -1}) // Ordenar los chats por mas recientes
+    .then(async results => {
+        results = await User.populate(results, {path: "ultimoMensaje.emisor"});
+        res.status(200).send(results);})
+    .catch(e => res.sendStatus(400));
+})
+
+router.get("/:chatId", async (req, res, next) => {
+    Chat.findOne({_id: req.params.chatId, usuarios: { $elemMatch: {$eq: req.session.user._id}}})
+    .populate("usuarios")
     .then(results => res.status(200).send(results))
+    .catch(e => res.sendStatus(400));
+})
+
+router.get("/:chatId/messages", async (req, res, next) => {
+    Messages.find({chat: req.params.chatId})
+    .populate("emisor")
+    .then(results => res.status(200).send(results))
+    .catch(e => res.sendStatus(400));
+})
+
+router.put("/:chatId", async (req, res, next) => {
+    Chat.findByIdAndUpdate(req.params.chatId, req.body) // Valor a encontrar , Objeto a actualizar
+    .then(() => res.status(204))
     .catch(e => res.sendStatus(400));
 })
 

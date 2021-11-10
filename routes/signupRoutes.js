@@ -25,7 +25,8 @@ router.post("/", async (req, res, next) => {
 
     // ¿El usuario o el email ya están en uso?
     const user = await User.findOne({
-        $or: [
+        $or: [      
+            {displayName: displayName},
             {usuario: usuario},
             {email: email}
         ]

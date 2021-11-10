@@ -817,3 +817,10 @@ display: flex;
 #notificationList .active {
     background-color: white;
 }
+
+.vacio {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}

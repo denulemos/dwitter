@@ -67,6 +67,7 @@ $(document).on("click", ".notification.active", (e) => {
   e.preventDefault();
   const callback = () => window.location = href;
   markNotificationsAsOpened(notificationId, callback);
+  location.reload();
 })
 
 // Evento nativo de bootstrap
@@ -379,7 +380,7 @@ const createPostHtml = (data, largeFont = false) => {
   if (!data.autor) {
     return;
   }
-  if (data.contenido === undefined) {
+  if (!data) {
     data = data.data;
   }
 
@@ -672,7 +673,7 @@ const markNotificationsAsOpened = (notificationId= null, callback= null) => {
     url: url,
     type: "PUT",
     success: () => {
-      callback();
+      location.reload();
     }
   })
 }
@@ -705,7 +706,7 @@ const showNotificationPopup = (data) => {
   let html = createNotificationHtml(data);
   const element = $(html);
   element.hide().prependTo("#notificationList").slideDown("fast");
-  setTimeout(() => html.fadeOut(400), 5000);
+  setTimeout(() => element.fadeOut(400), 5000);
 
 }
 
@@ -716,7 +717,7 @@ const showMessagePopUp = (newMessage) => {
   let html = createChatHtml(newMessage.chat);
   const element = $(html);
   element.hide().prependTo("#notificationList").slideDown("fast");
-  setTimeout(() => html.fadeOut(400), 5000);
+  setTimeout(() => element.fadeOut(400), 5000);
 
 }
 

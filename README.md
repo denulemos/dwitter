@@ -14,8 +14,41 @@ Pararse en la raiz del proyecto `./Dwitter` y en terminal, correr `npm install` 
 * Las llamadas a las API se haran con Axios y los Scripts del lado del cliente con JQuery o Javascript Vanilla. Algunas llamadas se harán usando AJAX. ✔️
 * El frontend se complementará con Bootstrap ✔️
 
-## Endpoints (Todavia en definicion ⚠️)
-* `api/posts` => Enviar dwit 
+## Endpoints
+**Api Posts `/api/posts`**
+* GET => Obtener posts
+* GET `/:id` => Obtener post por ID
+* POST => Generar nuevo post
+* PUT `/:id/like` => Likear post por ID
+* POST `/:id/redweet` => Redweetear Post
+* DELETE `/:id` => Eliminar Post por ID
+* PUT `/:id` => Esta funcion se usa para Pinear/Despinear a los Posts
+
+**Api Notifications `/api/notifications`**
+* GET => Obtener notificaciones donde el receptor es el usuario, esto se obtiene por la sesion activa
+* GET `/latest` => Obtener las ultimas notificaciones sin leer
+* PUT `/markAsOpened` => Marcar como leida todas las notificaciones
+* PUT `/:id/markAsOpened` => Marcar como leida una sola notificacion
+
+**Api Users `/api/users`**
+* GET => Obtener usuarios
+* PUT `/:userId/follow` => Seguir a un usuario
+* GET `/:userId/siguiendo` => Obtener los usuarios que sigue un usuario por ID
+* GET `/:userId/seguidores` => Obtener los usuarios que siguen a un usuario por ID
+* POST `/profilePicture` => Subir una foto de perfil
+* POST `/coverPhoto` => Subir una foto de portada
+
+**Api Messages `/api/messages`**
+* POST => Postear un mensaje
+
+**Api Chats `/api/chats`**
+* POST => Crear Chat
+* GET `/` => Obtener Chats
+* GET `/:chatId` => Obtener un chat en especifico
+* GET `/:chatId/messages` => Obtener mensajes de un chat
+* PUT `/:chatId/messages/markAsRead` => Marcar mensajes como leidos
+* PUT `/:chatId` => Update chat
+
 ## Schemas
 Los mismos pueden variar a medida que se va desarrollando el proyecto
 ### User

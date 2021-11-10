@@ -1,5 +1,4 @@
 # Dwitter 🐦
-⚠️ In Progress ⚠️
 
 ## ¿Cómo correr el proyecto? 👀
 Pararse en la raiz del proyecto `./Dwitter` y en terminal, correr `npm install` y luego `npm start`, luego ir a `localhost:8080` (Ya que apunta por defecto al puerto 8080)

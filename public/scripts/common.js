@@ -79,7 +79,8 @@ $("#responderModal").on("show.bs.modal", (event) => {
   axios
     .get("/api/posts/" + id)
     .then((response) => {
-      outputPosts(response.postData, $("#originalPostContainer"));
+      outputPosts(response.data.postData, $("#originalPostContainer"));
+      emitNotification(response.data.autor);
     })
     .catch((error) => {
       console.log(error);

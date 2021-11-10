@@ -118,3 +118,23 @@ mixin createTab(name, href, isSelected)
     - className = isSelected ? "tab active" : "tab"
     a(href=href, class= className)
         span #{name}
+
+mixin createChatImage(chatData, userLoggedIn)
+    if(!chatData)
+        return 
+    - let i = 0
+    - const maxImagesToShow = 3
+    - let remainingUsers = chatData.usuarios.length - maxImagesToShow
+    - remainingUsers -- // Para no mostrarnos a nosotros mismos
+    
+    .chatImagesContainer 
+        if remainingUsers > 0
+            .userCount 
+                span +#{reaminingUsers}   
+        each usuario in chatData.usuarios 
+            if chatData.usuarios.length != 1 && usuario._id == userLoggedIn._id 
+                -continue
+            else if i>=maxImagesToShow 
+                -break
+            img(src=usuario.foto, alt="Foto de perfil", title=usuario.displayName)
+            - i++

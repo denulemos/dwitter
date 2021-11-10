@@ -6,6 +6,17 @@ block content
     else 
         script. 
             const chatId = '!{chat._id}'
+        .chatPageContainer 
+            .chatTitleBarContainer 
+                +createChatImage(chat, userLoggedIn)
+                span#chatName Chat Placeholder
+            .mainContentContainer 
+                .chatContainer 
+                    .chatMessages
+                    .footer 
+                        textarea(name="messageInput", placeholder="Escribí un mensaje..") 
+                        button.sendMessageButton 
+                            i.fas.fa-paper-plane
 
 block scripts 
     script(src="/scripts/chatPage.js") 

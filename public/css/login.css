@@ -22,6 +22,7 @@ body {
     max-width: 500px;
     border: 1px solid #dedede;
     background-color: #fff;
+    margin-top: 8%;
     text-align: center;
     box-shadow: 0 1px 4px rgba(0,0,0,0.3);
     -webkit-box-shadow: 0 1px 4px rgba(0,0,0,0.3);
@@ -44,9 +45,14 @@ input[type="password"] {
 }
 
 input[type="submit"] {
-    background-color: #0099ff;
+    background-color: var(--greenish-blue-light);
     color: #fff;
     border: none;
     border-radius: 2px;
     margin-bottom: 10px;
+}
+
+i {
+    font-size: 90px;
+    color:var(--greenish-blue-light);
 }

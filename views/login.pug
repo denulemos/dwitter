@@ -2,7 +2,9 @@ extends layouts/login-layout.pug
 
 block content 
     .loginContainer 
-        h1 Login 
+        i.fas.fa-kiwi-bird                
+        
+        
         form(method="post") 
             p.errorMessage #{errorMessage}
 
@@ -10,3 +12,4 @@ block content
             input(type="password",  name="password", placeholder="Contraseña", required="", value="admin")
             input(type="submit", value="Ingresar")
         a(href="/signup") ¿Necesitás una cuenta? ¡Registrate!
+        script(src='https://kit.fontawesome.com/6d8b2a144e.js' crossorigin='anonymous')

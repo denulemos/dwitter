@@ -5,7 +5,7 @@ Pararse en la raiz del proyecto `./Dwitter` y en terminal, correr `npm install` 
 
 * Si aparece en consola el siguiente error `TextEncoder is not defined` para la dependencia `whatwg-url`, ir a `node_modules/whatwg-url/dist/encoding.js` y agregar la linea `const { TextEncoder, TextDecoder } = require("util");` en la parte de arriba de todo de este archivo. 
 * Este proyecto fue hecho con la version 10 de NodeJS. 
-* Los tests no estan completos, y estan en el branch `test-with-node`
+* Los tests no estan completos, y estan en el branch `test-at-node`
 
 ## Tecnologias
 * Se eligio NodeJS con Express para el backend por la rapidez de desarrollo que brinda. Tambien porque su integracion con Socket.IO es muy simple. ✔️
